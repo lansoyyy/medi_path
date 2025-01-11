@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
             left: 250,
             child: GestureDetector(
               onTap: () {
-                Get.to(const MainHomeScreen(),
+                Get.to(() => const MainHomeScreen(),
                     transition: Transition.leftToRightWithFade);
               },
               child: Container(

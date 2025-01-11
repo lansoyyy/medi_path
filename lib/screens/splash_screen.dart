@@ -20,7 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
     playAudio();
     Timer(const Duration(seconds: 4), () async {
       // Test if location services are enabled.
-      Get.off(const HomeScreen(), transition: Transition.leftToRightWithFade);
+      Get.off(() => const HomeScreen(),
+          transition: Transition.leftToRightWithFade);
     });
   }
 

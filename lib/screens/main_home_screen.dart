@@ -1,6 +1,11 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:medi_path/screens/main_home/doctors_screen.dart';
+import 'package:medi_path/screens/main_home/medtech_screen.dart';
+import 'package:medi_path/screens/main_home/nurse_screen.dart';
+import 'package:medi_path/screens/main_home/patients_screen.dart';
+import 'package:medi_path/screens/main_home/pharmacy_screen.dart';
+import 'package:medi_path/screens/main_home/reception_screen.dart';
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});
@@ -14,7 +19,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    playAudio();
+
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         Get.dialog(
@@ -35,45 +40,113 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     );
   }
 
-  late AudioPlayer player = AudioPlayer();
-  playAudio() async {
-    player.setReleaseMode(ReleaseMode.loop);
-    player.setVolume(1);
-
-    await player.setSource(
-      AssetSource(
-        'images/background.mp3',
-      ),
-    );
-
-    await player.resume();
-  }
-
-  pauseAudio() async {
-    await player.stop();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    pauseAudio();
-
-    player.stop();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(
-                'assets/images/8.png',
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(
+                    'assets/images/8.png',
+                  ),
+                  fit: BoxFit.cover),
+            ),
+          ),
+          Positioned(
+            bottom: 190,
+            left: 50,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const ReceptionScreen(),
+                    transition: Transition.circularReveal);
+              },
+              child: Container(
+                width: 225,
+                height: 125,
+                color: Colors.transparent,
               ),
-              fit: BoxFit.cover),
-        ),
+            ),
+          ),
+          Positioned(
+            bottom: 220,
+            left: 300,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const NurseScreen(),
+                    transition: Transition.circularReveal);
+              },
+              child: Container(
+                width: 180,
+                height: 125,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 240,
+            left: 480,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const DoctorScreen(),
+                    transition: Transition.circularReveal);
+              },
+              child: Container(
+                width: 180,
+                height: 125,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 40,
+            left: 50,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const MedTechScreen(),
+                    transition: Transition.circularReveal);
+              },
+              child: Container(
+                width: 300,
+                height: 125,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 70,
+            left: 350,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const PatientScreen(),
+                    transition: Transition.circularReveal);
+              },
+              child: Container(
+                width: 180,
+                height: 125,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 120,
+            left: 520,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const PharmacyScreen(),
+                    transition: Transition.circularReveal);
+              },
+              child: Container(
+                width: 250,
+                height: 125,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
