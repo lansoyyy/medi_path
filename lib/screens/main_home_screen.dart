@@ -1,36 +1,48 @@
-import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:medi_path/screens/home_screen.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class MainHomeScreen extends StatefulWidget {
+  const MainHomeScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<MainHomeScreen> createState() => _MainHomeScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     playAudio();
-    Timer(const Duration(seconds: 4), () async {
-      // Test if location services are enabled.
-      Get.off(const HomeScreen(), transition: Transition.leftToRightWithFade);
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        Get.dialog(
+          barrierDismissible: true,
+          Container(
+            height: 400,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fitHeight,
+                image: AssetImage(
+                  'assets/images/Task sample.PNG',
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   late AudioPlayer player = AudioPlayer();
   playAudio() async {
+    player.setReleaseMode(ReleaseMode.loop);
     player.setVolume(1);
 
     await player.setSource(
       AssetSource(
-        'images/intro.wav',
+        'images/background.mp3',
       ),
     );
 
@@ -58,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage(
-                'assets/images/1.png',
+                'assets/images/8.png',
               ),
               fit: BoxFit.cover),
         ),

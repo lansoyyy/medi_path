@@ -1,5 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medi_path/screens/main_home_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -113,7 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
             left: 250,
             child: GestureDetector(
               onTap: () {
-                print('asd');
+                Get.to(const MainHomeScreen(),
+                    transition: Transition.leftToRightWithFade);
               },
               child: Container(
                 width: 300,
