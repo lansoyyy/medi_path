@@ -23,6 +23,33 @@ class ReceptionScreen extends StatelessWidget {
             ),
           ),
           Positioned(
+            bottom: 130,
+            left: 433,
+            child: GestureDetector(
+              onTap: () {
+                Get.dialog(
+                  barrierDismissible: true,
+                  Container(
+                    height: 400,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.fitHeight,
+                        image: AssetImage(
+                          'assets/images/Task sample.PNG',
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                width: 50,
+                height: 40,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
             bottom: 0,
             left: 605,
             child: GestureDetector(
