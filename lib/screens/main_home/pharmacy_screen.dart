@@ -23,6 +23,21 @@ class PharmacyScreen extends StatelessWidget {
             ),
           ),
           Positioned(
+            bottom: 280,
+            left: 150,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const Medicine(),
+                    transition: Transition.circularReveal);
+              },
+              child: Container(
+                width: 140,
+                height: 200,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
             bottom: 5,
             left: 605,
             child: GestureDetector(
@@ -37,6 +52,42 @@ class PharmacyScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class Medicine extends StatelessWidget {
+  const Medicine({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/images/Medicine bottles.PNG'))),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20, right: 50),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Container(
+            decoration:
+                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+            child: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 50,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

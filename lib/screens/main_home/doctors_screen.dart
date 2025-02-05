@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:medi_path/widgets/show_dialog.dart';
 
 class DoctorScreen extends StatelessWidget {
   const DoctorScreen({super.key});
@@ -20,6 +21,20 @@ class DoctorScreen extends StatelessWidget {
                     "assets/images/Doctor's Room.png",
                   ),
                   fit: BoxFit.fitHeight),
+            ),
+          ),
+          Positioned(
+            bottom: 160,
+            left: 550,
+            child: GestureDetector(
+              onTap: () {
+                showImageDialog('Prescribed medicine.PNG');
+              },
+              child: Container(
+                width: 40,
+                height: 25,
+                color: Colors.transparent,
+              ),
             ),
           ),
           Positioned(

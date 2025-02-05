@@ -23,6 +23,21 @@ class MedTechScreen extends StatelessWidget {
             ),
           ),
           Positioned(
+            bottom: 150,
+            left: 620,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const XRay(),
+                    transition: Transition.circularReveal);
+              },
+              child: Container(
+                width: 60,
+                height: 60,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
             bottom: 10,
             left: 605,
             child: GestureDetector(
@@ -37,6 +52,43 @@ class MedTechScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class XRay extends StatelessWidget {
+  const XRay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(
+                  'assets/images/Screenshot_2025-01-27_221331-removebg-preview.png'))),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20, right: 50),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Container(
+            decoration:
+                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+            child: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 50,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

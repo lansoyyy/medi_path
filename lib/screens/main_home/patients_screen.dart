@@ -53,6 +53,33 @@ class _PatientScreenState extends State<PatientScreen> {
             ),
           ),
           Positioned(
+            bottom: 165,
+            left: 355,
+            child: GestureDetector(
+              onTap: () {
+                Get.dialog(
+                  barrierDismissible: true,
+                  Container(
+                    height: 400,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.fitHeight,
+                        image: AssetImage(
+                          'assets/images/Adobe Express - file.png',
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                width: 35,
+                height: 35,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
             bottom: 0,
             left: 605,
             child: GestureDetector(
