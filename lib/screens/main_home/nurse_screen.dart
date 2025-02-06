@@ -38,6 +38,21 @@ class NurseScreen extends StatelessWidget {
             ),
           ),
           Positioned(
+            bottom: 100,
+            left: 350,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const Pillow(),
+                    transition: Transition.circularReveal);
+              },
+              child: Container(
+                width: 100,
+                height: 100,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
             bottom: 80,
             left: 580,
             child: GestureDetector(
@@ -85,6 +100,42 @@ class Fridge extends StatelessWidget {
               fit: BoxFit.cover,
               image: AssetImage(
                   'assets/images/Screenshot_2025-01-31_221338-removebg-preview.png'))),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20, right: 50),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Container(
+            decoration:
+                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+            child: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 50,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Pillow extends StatelessWidget {
+  const Pillow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.fitHeight,
+              image: AssetImage('assets/images/NURSE ROOM - Copy.png'))),
       child: Padding(
         padding: const EdgeInsets.only(top: 20, right: 50),
         child: Align(
