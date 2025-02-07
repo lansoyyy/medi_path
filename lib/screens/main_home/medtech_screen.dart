@@ -109,33 +109,67 @@ class XRay extends StatelessWidget {
   }
 }
 
-class BloodTest extends StatelessWidget {
+class BloodTest extends StatefulWidget {
   const BloodTest({super.key});
 
   @override
+  State<BloodTest> createState() => _BloodTestState();
+}
+
+class _BloodTestState extends State<BloodTest> {
+  bool hasClicked = false;
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/images/MEDTECH ROOM - Copy.png'))),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20, right: 50),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            decoration:
-                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-            child: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: const Icon(
-                Icons.close,
-                color: Colors.white,
-                size: 50,
+    return Scaffold(
+      floatingActionButton: hasClicked
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Image.asset(
+                  'assets/images/file1.png',
+                  height: 100,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Image.asset(
+                  'assets/images/file2.png',
+                  height: 100,
+                ),
+              ],
+            )
+          : null,
+      body: GestureDetector(
+        onTap: () {
+          setState(() {
+            hasClicked = true;
+          });
+        },
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/images/MEDTECH ROOM - Copy.png'))),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20, right: 50),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.red, shape: BoxShape.circle),
+                child: IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                ),
               ),
             ),
           ),
