@@ -7,6 +7,7 @@ import 'package:medi_path/screens/main_home/nurse_screen.dart';
 import 'package:medi_path/screens/main_home/patients_screen.dart';
 import 'package:medi_path/screens/main_home/pharmacy_screen.dart';
 import 'package:medi_path/screens/main_home/reception_screen.dart';
+import 'package:medi_path/widgets/show_dialog.dart';
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});
@@ -23,40 +24,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        Get.dialog(
-          barrierDismissible: true,
-          Container(
-            height: 400,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.fitHeight,
-                image: AssetImage(
-                  'assets/images/Task sample.PNG',
-                ),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20, right: 50),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.red, shape: BoxShape.circle),
-                  child: IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 50,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
+        showTaskDialog();
       },
     );
   }

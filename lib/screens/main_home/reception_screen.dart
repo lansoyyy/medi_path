@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:medi_path/widgets/show_dialog.dart';
 
 class ReceptionScreen extends StatelessWidget {
   const ReceptionScreen({super.key});
@@ -27,53 +28,7 @@ class ReceptionScreen extends StatelessWidget {
             left: 433,
             child: GestureDetector(
               onTap: () {
-                Get.dialog(
-                  barrierDismissible: true,
-                  Container(
-                    height: 400,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.fitHeight,
-                        image: AssetImage(
-                          'assets/images/Task sample.PNG',
-                        ),
-                      ),
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          bottom: 35,
-                          left: 305,
-                          child: Container(
-                            width: 200,
-                            height: 165,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20, right: 50),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.red, shape: BoxShape.circle),
-                              child: IconButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: const Icon(
-                                  Icons.close,
-                                  color: Colors.white,
-                                  size: 50,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                showTaskDialog();
               },
               child: Container(
                 width: 50,

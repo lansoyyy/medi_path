@@ -12,12 +12,12 @@ List<Map<String, dynamic>> levelOneTasks = [
   {
     'room': 'Medtech Room',
     'task':
-        'Check the patient’s vital signs (blood pressure, heart rate, and temperature).',
+        'Check the patient’s vital signs\n(blood pressure, heart rate,\nand temperature).',
     'isDone': false,
   },
   {
     'room': 'Patients Room',
-    'task': 'Assist the patient in sitting up and provide water.',
+    'task': 'Assist the patient in sitting\nup and provide water.',
     'isDone': false,
   },
   {
