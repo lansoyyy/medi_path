@@ -39,25 +39,38 @@ class ReceptionScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20, right: 50),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.red, shape: BoxShape.circle),
-                          child: IconButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 50,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          bottom: 35,
+                          left: 305,
+                          child: Container(
+                            width: 200,
+                            height: 165,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20, right: 50),
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  color: Colors.red, shape: BoxShape.circle),
+                              child: IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 50,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 );

@@ -1,9 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:medi_path/widgets/text_widget.dart';
 
-class PharmacyScreen extends StatelessWidget {
+class PharmacyScreen extends StatefulWidget {
   const PharmacyScreen({super.key});
+
+  @override
+  State<PharmacyScreen> createState() => _PharmacyScreenState();
+}
+
+class _PharmacyScreenState extends State<PharmacyScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        showDoctorDialog(context);
+      },
+    );
+  }
+
+  void showDoctorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 60), // Space for the doctor's image
+                    TextWidget(
+                      text:
+                          '💊 Pharmacist Sarah: "Hi! Please get the prescribed medicine for the patient from the pharmacy shelves."',
+                      fontSize: 14,
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Got it!'),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: -60,
+                left: 80,
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.white,
+                  child: Image.asset('assets/images/nurse.png'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
