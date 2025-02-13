@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:medi_path/widgets/show_dialog.dart';
+import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/text_widget.dart';
+import 'package:medi_path/widgets/toast_widget.dart';
 
 class DoctorScreen extends StatefulWidget {
   const DoctorScreen({super.key});
@@ -91,7 +92,45 @@ class _DoctorScreenState extends State<DoctorScreen> {
             left: 550,
             child: GestureDetector(
               onTap: () {
-                showImageDialog('Prescribed medicine.PNG');
+                Get.dialog(
+                  barrierDismissible: true,
+                  Container(
+                    height: 400,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.fitHeight,
+                        image: AssetImage(
+                          'assets/images/Prescribed medicine.PNG',
+                        ),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20, right: 50),
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.red, shape: BoxShape.circle),
+                          child: IconButton(
+                            onPressed: () {
+                              Get.back();
+                              setState(() {
+                                currentItems.add('Medicine Prescriptions');
+                              });
+                              showToast(
+                                  'Medicine Prescriptions is added to bag!');
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
               },
               child: Container(
                 width: 40,

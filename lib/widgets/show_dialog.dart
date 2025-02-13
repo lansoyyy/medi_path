@@ -42,6 +42,7 @@ showImageDialog(String name) {
 }
 
 showTaskDialog() {
+  print(currentItems.contains('Food'));
   Get.dialog(
     barrierDismissible: true,
     Dialog(
@@ -78,10 +79,55 @@ showTaskDialog() {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Icon(
-                                Icons.check_box_outline_blank,
-                                size: 15,
-                              ),
+                              i == 0
+                                  ? currentItems.contains('Pillow') &&
+                                          currentItems.contains('Food')
+                                      ? const Icon(
+                                          Icons.check_box,
+                                          size: 15,
+                                        )
+                                      : const Icon(
+                                          Icons.check_box_outline_blank,
+                                          size: 15,
+                                        )
+                                  : i == 1
+                                      ? currentItems.contains(
+                                              'Medicine Prescriptions')
+                                          ? const Icon(
+                                              Icons.check_box,
+                                              size: 15,
+                                            )
+                                          : const Icon(
+                                              Icons.check_box_outline_blank,
+                                              size: 15,
+                                            )
+                                      : i == 2
+                                          ? currentItems.contains(
+                                                  'Vital Signs Equipment')
+                                              ? const Icon(
+                                                  Icons.check_box,
+                                                  size: 15,
+                                                )
+                                              : const Icon(
+                                                  Icons.check_box_outline_blank,
+                                                  size: 15,
+                                                )
+                                          : i == 3
+                                              ? currentItems.contains(
+                                                      'Prescribed Medicine (2)')
+                                                  ? const Icon(
+                                                      Icons.check_box,
+                                                      size: 15,
+                                                    )
+                                                  : const Icon(
+                                                      Icons
+                                                          .check_box_outline_blank,
+                                                      size: 15,
+                                                    )
+                                              : const Icon(
+                                                  Icons.check_box_outline_blank,
+                                                  size: 15,
+                                                ),
                               const SizedBox(
                                 width: 5,
                               ),

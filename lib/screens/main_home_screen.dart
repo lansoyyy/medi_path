@@ -7,7 +7,9 @@ import 'package:medi_path/screens/main_home/nurse_screen.dart';
 import 'package:medi_path/screens/main_home/patients_screen.dart';
 import 'package:medi_path/screens/main_home/pharmacy_screen.dart';
 import 'package:medi_path/screens/main_home/reception_screen.dart';
+import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/show_dialog.dart';
+import 'package:medi_path/widgets/text_widget.dart';
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});
@@ -34,9 +36,17 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.transparent,
-        child: Image.asset(
-          'assets/images/open-box.png',
-          height: 50,
+        child: Badge(
+          backgroundColor: Colors.red,
+          label: TextWidget(
+            text: currentItems.length.toString(),
+            fontSize: 12,
+            color: Colors.white,
+          ),
+          child: Image.asset(
+            'assets/images/open-box.png',
+            height: 50,
+          ),
         ),
         onPressed: () {
           Get.to(() => const BagScreen(),

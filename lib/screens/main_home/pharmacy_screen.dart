@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:medi_path/screens/game_screens/color.dart';
 import 'package:medi_path/widgets/text_widget.dart';
 
 class PharmacyScreen extends StatefulWidget {
@@ -125,28 +126,35 @@ class Medicine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/images/Medicine bottles.PNG'))),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20, right: 50),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            decoration:
-                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-            child: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: const Icon(
-                Icons.close,
-                color: Colors.white,
-                size: 50,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                ColorMatchingGame(item: 'Prescribed Medicine (2)')));
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/Medicine bottles.PNG'))),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, right: 50),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.red, shape: BoxShape.circle),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 50,
+                ),
               ),
             ),
           ),

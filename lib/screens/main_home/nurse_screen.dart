@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:medi_path/screens/game_screens/color.dart';
+import 'package:medi_path/screens/game_screens/number.dart';
 import 'package:medi_path/widgets/show_dialog.dart';
 import 'package:medi_path/widgets/text_widget.dart';
 
@@ -155,29 +157,35 @@ class Fridge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                  'assets/images/Screenshot_2025-01-31_221338-removebg-preview.png'))),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20, right: 50),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            decoration:
-                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-            child: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: const Icon(
-                Icons.close,
-                color: Colors.white,
-                size: 50,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => NumberMatchingGame(item: 'Food')));
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(
+                    'assets/images/Screenshot_2025-01-31_221338-removebg-preview.png'))),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, right: 50),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.red, shape: BoxShape.circle),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 50,
+                ),
               ),
             ),
           ),
@@ -192,28 +200,34 @@ class Pillow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.fitHeight,
-              image: AssetImage('assets/images/NURSE ROOM - Copy.png'))),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20, right: 50),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            decoration:
-                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-            child: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: const Icon(
-                Icons.close,
-                color: Colors.white,
-                size: 50,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ColorMatchingGame(item: 'Pillow')));
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fitHeight,
+                image: AssetImage('assets/images/NURSE ROOM - Copy.png'))),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, right: 50),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.red, shape: BoxShape.circle),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 50,
+                ),
               ),
             ),
           ),

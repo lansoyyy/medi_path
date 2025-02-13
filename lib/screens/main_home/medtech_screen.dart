@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:medi_path/screens/game_screens/number.dart';
 import 'package:medi_path/widgets/text_widget.dart';
 
 class MedTechScreen extends StatefulWidget {
@@ -180,34 +181,14 @@ class BloodTest extends StatefulWidget {
 }
 
 class _BloodTestState extends State<BloodTest> {
-  bool hasClicked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: hasClicked
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Image.asset(
-                  'assets/images/file1.png',
-                  height: 100,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Image.asset(
-                  'assets/images/file2.png',
-                  height: 100,
-                ),
-              ],
-            )
-          : null,
       body: GestureDetector(
         onTap: () {
-          setState(() {
-            hasClicked = true;
-          });
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  NumberMatchingGame(item: 'Vital Signs Equipment')));
         },
         child: Container(
           width: double.infinity,
