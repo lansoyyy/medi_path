@@ -15,6 +15,26 @@ showImageDialog(String name) {
           ),
         ),
       ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20, right: 50),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Container(
+            decoration:
+                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+            child: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 50,
+              ),
+            ),
+          ),
+        ),
+      ),
     ),
   );
 }

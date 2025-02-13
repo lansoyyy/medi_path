@@ -29,6 +29,26 @@ class _PatientScreenState extends State<PatientScreen> {
                 ),
               ),
             ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20, right: 50),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: Colors.red, shape: BoxShape.circle),
+                  child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         );
       },
@@ -66,6 +86,26 @@ class _PatientScreenState extends State<PatientScreen> {
                         fit: BoxFit.fitHeight,
                         image: AssetImage(
                           'assets/images/Adobe Express - file.png',
+                        ),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20, right: 50),
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.red, shape: BoxShape.circle),
+                          child: IconButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
                         ),
                       ),
                     ),
