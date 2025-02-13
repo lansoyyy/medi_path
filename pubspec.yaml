@@ -39,6 +39,7 @@ dependencies:
   intl:
   get:
   audioplayers:
+  get_storage:
 
 dev_dependencies:
   flutter_test:
