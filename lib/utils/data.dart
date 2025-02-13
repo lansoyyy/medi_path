@@ -26,3 +26,13 @@ List<Map<String, dynamic>> levelOneTasks = [
     'isDone': false,
   },
 ];
+
+List currentItems = [];
+
+List<String> levelOneRequiredItems = [
+  'Pillow',
+  'Food',
+  'Medicine Prescriptions',
+  'Vital Signs Equipment',
+  'Prescribed Medicine (2)',
+];

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:medi_path/screens/bag_screen.dart';
 import 'package:medi_path/screens/main_home/doctors_screen.dart';
 import 'package:medi_path/screens/main_home/medtech_screen.dart';
 import 'package:medi_path/screens/main_home/nurse_screen.dart';
@@ -63,6 +64,17 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.transparent,
+        child: Image.asset(
+          'assets/images/open-box.png',
+          height: 50,
+        ),
+        onPressed: () {
+          Get.to(() => const BagScreen(),
+              transition: Transition.leftToRightWithFade);
+        },
+      ),
       body: Stack(
         children: [
           Container(
