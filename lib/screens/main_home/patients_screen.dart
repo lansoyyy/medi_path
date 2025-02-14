@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:medi_path/screens/game_screens/number.dart';
 
 class PatientScreen extends StatefulWidget {
   const PatientScreen({super.key});
@@ -79,31 +80,38 @@ class _PatientScreenState extends State<PatientScreen> {
               onTap: () {
                 Get.dialog(
                   barrierDismissible: true,
-                  Container(
-                    height: 400,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.fitHeight,
-                        image: AssetImage(
-                          'assets/images/Adobe Express - file.png',
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              NumberMatchingGame(item: 'Oximeter')));
+                    },
+                    child: Container(
+                      height: 400,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fitHeight,
+                          image: AssetImage(
+                            'assets/images/Adobe Express - file.png',
+                          ),
                         ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20, right: 50),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.red, shape: BoxShape.circle),
-                          child: IconButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 50,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20, right: 50),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                color: Colors.red, shape: BoxShape.circle),
+                            child: IconButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 50,
+                              ),
                             ),
                           ),
                         ),

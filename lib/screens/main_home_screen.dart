@@ -31,15 +31,106 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     );
   }
 
+  getCompleted() {
+    if (currentLevel == 1) {
+      if (currentItems.contains('Pillow') &&
+          currentItems.contains('Food') &&
+          currentItems.contains('Medicine Prescriptions') &&
+          currentItems.contains('Vital Signs Equipment') &&
+          currentItems.contains('Prescribed Medicine (2)')) {
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => AlertDialog(
+                  title: const Text(
+                    'Level Completed!',
+                    style: TextStyle(
+                        fontFamily: 'QBold', fontWeight: FontWeight.bold),
+                  ),
+                  content: const Text(
+                    'You completed the Level 1 Challenge!',
+                    style: TextStyle(fontFamily: 'QRegular'),
+                  ),
+                  actions: <Widget>[
+                    MaterialButton(
+                      onPressed: () async {
+                        setState(() {
+                          currentLevel = 2;
+                        });
+
+                        Navigator.pop(context);
+                        // Navigator.of(context).pushReplacement(
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const LoginScreen()),
+                        // );
+                      },
+                      child: const Text(
+                        'Continue Next Level',
+                        style: TextStyle(
+                            fontFamily: 'QRegular',
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ));
+      }
+    } else {
+      if (currentItems.contains('Pillow') &&
+          currentItems.contains('Food') &&
+          currentItems.contains('Medicine Prescriptions') &&
+          currentItems.contains('Vital Signs Equipment') &&
+          currentItems.contains('Prescribed Medicine (2)') &&
+          currentItems.contains('X-Ray') &&
+          currentItems.contains('Oximeter')) {
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => AlertDialog(
+                  title: const Text(
+                    'Level Completed!',
+                    style: TextStyle(
+                        fontFamily: 'QBold', fontWeight: FontWeight.bold),
+                  ),
+                  content: const Text(
+                    'You completed the whole Challenge!',
+                    style: TextStyle(fontFamily: 'QRegular'),
+                  ),
+                  actions: <Widget>[
+                    MaterialButton(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        // Navigator.of(context).pushReplacement(
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const LoginScreen()),
+                        // );
+                      },
+                      child: const Text(
+                        'Close',
+                        style: TextStyle(
+                            fontFamily: 'QRegular',
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        getCompleted();
+      },
+    );
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.transparent,
         child: Badge(
           backgroundColor: Colors.red,
           label: TextWidget(
-            text: currentItems.length.toString(),
+            text: 'Bag',
             fontSize: 12,
             color: Colors.white,
           ),
