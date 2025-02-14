@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:medi_path/screens/character_screen.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
 import 'package:medi_path/screens/settings_screen.dart';
 
@@ -133,7 +134,10 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: 68,
             left: 250,
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(() => const CharacterScreen(),
+                    transition: Transition.leftToRightWithFade);
+              },
               child: Container(
                 width: 300,
                 height: 60,

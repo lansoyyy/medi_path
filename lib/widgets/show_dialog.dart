@@ -59,6 +59,21 @@ showTaskDialog() {
         child: Stack(
           children: [
             Positioned(
+              bottom: 185,
+              left: 285,
+              child: Container(
+                width: 50,
+                height: 43,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(
+                      image:
+                          AssetImage('assets/images/characters/$character.PNG'),
+                      fit: BoxFit.cover),
+                ),
+              ),
+            ),
+            Positioned(
               bottom: 30,
               left: 280,
               child: Container(
