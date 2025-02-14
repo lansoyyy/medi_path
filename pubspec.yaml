@@ -40,6 +40,8 @@ dependencies:
   get:
   audioplayers:
   get_storage:
+  flutter_volume_controller:
+  screen_brightness:
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
+import 'package:medi_path/screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -91,7 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.settings,
                   color: Colors.red,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => const SettingsScreen(),
+                      transition: Transition.leftToRightWithFade);
+                },
               ),
             ],
           ),
@@ -129,9 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: 68,
             left: 250,
             child: GestureDetector(
-              onTap: () {
-                print('asdasd');
-              },
+              onTap: () {},
               child: Container(
                 width: 300,
                 height: 60,
