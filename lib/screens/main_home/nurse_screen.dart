@@ -89,59 +89,59 @@ class _NurseScreenState extends State<NurseScreen> {
             ),
           ),
           Positioned(
-            bottom: 175,
-            left: 140,
+            bottom: 150,
+            left: 120,
             child: GestureDetector(
               onTap: () {
                 showTaskDialog();
               },
               child: Container(
-                width: 50,
-                height: 75,
-                color: Colors.transparent,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 100,
-            left: 350,
-            child: GestureDetector(
-              onTap: () {
-                Get.to(() => const Pillow(),
-                    transition: Transition.circularReveal);
-              },
-              child: Container(
-                width: 100,
-                height: 100,
+                width: 120,
+                height: 150,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
             bottom: 80,
-            left: 580,
+            left: 300,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => const Pillow(),
+                    transition: Transition.circularReveal);
+              },
+              child: Container(
+                width: 175,
+                height: 175,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 70,
+            left: 530,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const Fridge(),
                     transition: Transition.circularReveal);
               },
               child: Container(
-                width: 150,
-                height: 200,
+                width: 200,
+                height: 300,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
             bottom: 0,
-            left: 605,
+            left: 500,
             child: GestureDetector(
               onTap: () {
                 Get.back();
               },
               child: Container(
-                width: 125,
-                height: 50,
+                width: 280,
+                height: 100,
                 color: Colors.transparent,
               ),
             ),

@@ -97,8 +97,8 @@ class _PatientScreenState extends State<PatientScreen> {
             ),
           ),
           Positioned(
-            bottom: 165,
-            left: 355,
+            bottom: 120,
+            left: 300,
             child: GestureDetector(
               onTap: () {
                 Get.dialog(
@@ -144,22 +144,22 @@ class _PatientScreenState extends State<PatientScreen> {
                 );
               },
               child: Container(
-                width: 35,
-                height: 35,
+                width: 150,
+                height: 150,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
             bottom: 0,
-            left: 605,
+            left: 500,
             child: GestureDetector(
               onTap: () {
                 Get.back();
               },
               child: Container(
-                width: 125,
-                height: 50,
+                width: 280,
+                height: 100,
                 color: Colors.transparent,
               ),
             ),

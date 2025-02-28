@@ -24,29 +24,29 @@ class ReceptionScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 130,
-            left: 433,
+            bottom: 100,
+            left: 375,
             child: GestureDetector(
               onTap: () {
                 showTaskDialog();
               },
               child: Container(
-                width: 50,
-                height: 40,
+                width: 180,
+                height: 150,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
             bottom: 0,
-            left: 605,
+            left: 500,
             child: GestureDetector(
               onTap: () {
                 Get.back();
               },
               child: Container(
-                width: 125,
-                height: 50,
+                width: 280,
+                height: 100,
                 color: Colors.transparent,
               ),
             ),

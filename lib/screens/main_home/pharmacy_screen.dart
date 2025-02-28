@@ -87,30 +87,30 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
             ),
           ),
           Positioned(
-            bottom: 280,
-            left: 150,
+            bottom: 220,
+            left: 100,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const Medicine(),
                     transition: Transition.circularReveal);
               },
               child: Container(
-                width: 140,
-                height: 200,
+                width: 300,
+                height: 250,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
-            bottom: 5,
-            left: 605,
+            bottom: 0,
+            left: 500,
             child: GestureDetector(
               onTap: () {
                 Get.back();
               },
               child: Container(
-                width: 125,
-                height: 50,
+                width: 280,
+                height: 100,
                 color: Colors.transparent,
               ),
             ),

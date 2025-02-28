@@ -88,45 +88,45 @@ class _MedTechScreenState extends State<MedTechScreen> {
             ),
           ),
           Positioned(
-            bottom: 120,
-            left: 200,
+            bottom: 100,
+            left: 150,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const BloodTest(),
                     transition: Transition.circularReveal);
               },
               child: Container(
-                width: 350,
-                height: 80,
+                width: 400,
+                height: 150,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
-            bottom: 150,
-            left: 620,
+            bottom: 100,
+            left: 600,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const XRay(),
                     transition: Transition.circularReveal);
               },
               child: Container(
-                width: 60,
-                height: 60,
+                width: 150,
+                height: 200,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
-            bottom: 10,
-            left: 605,
+            bottom: 0,
+            left: 500,
             child: GestureDetector(
               onTap: () {
                 Get.back();
               },
               child: Container(
-                width: 125,
-                height: 50,
+                width: 280,
+                height: 100,
                 color: Colors.transparent,
               ),
             ),

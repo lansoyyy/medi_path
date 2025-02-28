@@ -89,7 +89,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
           ),
           Positioned(
             bottom: 160,
-            left: 550,
+            left: 510,
             child: GestureDetector(
               onTap: () {
                 Get.dialog(
@@ -133,22 +133,22 @@ class _DoctorScreenState extends State<DoctorScreen> {
                 );
               },
               child: Container(
-                width: 40,
-                height: 25,
+                width: 100,
+                height: 80,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
             bottom: 0,
-            left: 605,
+            left: 500,
             child: GestureDetector(
               onTap: () {
                 Get.back();
               },
               child: Container(
-                width: 125,
-                height: 50,
+                width: 280,
+                height: 100,
                 color: Colors.transparent,
               ),
             ),

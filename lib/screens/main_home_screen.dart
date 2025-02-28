@@ -159,90 +159,90 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           ),
           Positioned(
             bottom: 190,
-            left: 50,
+            left: 20,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const ReceptionScreen(),
                     transition: Transition.circularReveal);
               },
               child: Container(
-                width: 225,
-                height: 125,
+                width: 260,
+                height: 160,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
             bottom: 220,
-            left: 300,
+            left: 280,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const NurseScreen(),
                     transition: Transition.circularReveal);
               },
               child: Container(
-                width: 180,
-                height: 125,
+                width: 220,
+                height: 150,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
             bottom: 240,
-            left: 480,
+            left: 460,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const DoctorScreen(),
                     transition: Transition.circularReveal);
               },
               child: Container(
-                width: 180,
-                height: 125,
+                width: 280,
+                height: 150,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
-            bottom: 40,
-            left: 50,
+            bottom: 10,
+            left: 10,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const MedTechScreen(),
                     transition: Transition.circularReveal);
               },
               child: Container(
-                width: 300,
-                height: 125,
+                width: 350,
+                height: 180,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
-            bottom: 70,
-            left: 350,
+            bottom: 20,
+            left: 310,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const PatientScreen(),
                     transition: Transition.circularReveal);
               },
               child: Container(
-                width: 180,
-                height: 125,
+                width: 240,
+                height: 220,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
-            bottom: 120,
-            left: 520,
+            bottom: 20,
+            left: 510,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const PharmacyScreen(),
                     transition: Transition.circularReveal);
               },
               child: Container(
-                width: 250,
-                height: 125,
+                width: 300,
+                height: 250,
                 color: Colors.transparent,
               ),
             ),
