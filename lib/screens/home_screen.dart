@@ -117,30 +117,30 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Positioned(
             bottom: 140,
-            left: 250,
+            left: 165,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const MainHomeScreen(),
                     transition: Transition.leftToRightWithFade);
               },
               child: Container(
-                width: 300,
-                height: 60,
+                width: 500,
+                height: 80,
                 color: Colors.transparent,
               ),
             ),
           ),
           Positioned(
             bottom: 68,
-            left: 250,
+            left: 165,
             child: GestureDetector(
               onTap: () {
                 Get.to(() => const CharacterScreen(),
                     transition: Transition.leftToRightWithFade);
               },
               child: Container(
-                width: 300,
-                height: 60,
+                width: 500,
+                height: 70,
                 color: Colors.transparent,
               ),
             ),
