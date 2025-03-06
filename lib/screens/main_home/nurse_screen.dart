@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
-import 'package:medi_path/screens/game_screens/number.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
 import 'package:medi_path/widgets/show_dialog.dart';
 import 'package:medi_path/widgets/text_widget.dart';
@@ -162,7 +161,7 @@ class Fridge extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => NumberMatchingGame(item: 'Food')));
+            builder: (context) => const ColorMatchingGame(item: 'Food')));
       },
       child: Container(
         width: double.infinity,
@@ -205,7 +204,7 @@ class Pillow extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ColorMatchingGame(item: 'Pillow')));
+            builder: (context) => const ColorMatchingGame(item: 'Pillow')));
       },
       child: Container(
         width: double.infinity,

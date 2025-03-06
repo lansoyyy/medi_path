@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
-import 'package:medi_path/screens/game_screens/number.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
 import 'package:medi_path/widgets/text_widget.dart';
 
@@ -147,7 +146,7 @@ class XRay extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ColorMatchingGame(item: 'X-Ray')));
+            builder: (context) => const ColorMatchingGame(item: 'X-Ray')));
       },
       child: Container(
         width: double.infinity,
@@ -197,7 +196,7 @@ class _BloodTestState extends State<BloodTest> {
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
-                  NumberMatchingGame(item: 'Vital Signs Equipment')));
+                  const ColorMatchingGame(item: 'Vital Signs Equipment')));
         },
         child: Container(
           width: double.infinity,

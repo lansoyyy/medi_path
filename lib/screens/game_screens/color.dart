@@ -7,53 +7,66 @@ import 'package:medi_path/widgets/text_widget.dart';
 import 'package:medi_path/widgets/toast_widget.dart';
 
 class ColorMatchingGame extends StatefulWidget {
-  String item;
+  final String item;
 
-  ColorMatchingGame({super.key, required this.item});
+  const ColorMatchingGame({super.key, required this.item});
 
   @override
   State<ColorMatchingGame> createState() => _ColorMatchingGameState();
 }
 
 class _ColorMatchingGameState extends State<ColorMatchingGame> {
-  final List<Color> colors = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.yellow
+  final List<String> medicineImages = [
+    'assets/images/new/capsule_red_blue.png',
+    'assets/images/new/capsule_green_yellow.png',
+    'assets/images/new/tablet_white.png',
+    'assets/images/new/tablet_pink.png',
+    'assets/images/new/syrup_bottle.png',
+    'assets/images/new/injection_vial.png'
   ];
-  late List<Color> shuffledColors;
-  Color? selectedColor;
+
+  final Map<String, Color> medicineColors = {
+    'assets/images/new/capsule_red_blue.png': Colors.redAccent,
+    'assets/images/new/capsule_green_yellow.png': Colors.greenAccent,
+    'assets/images/new/tablet_white.png': Colors.white,
+    'assets/images/new/tablet_pink.png': Colors.pinkAccent,
+    'assets/images/new/syrup_bottle.png': Colors.brown,
+    'assets/images/new/injection_vial.png': Colors.blueAccent,
+  };
+
+  late List<String> shuffledMedicines;
+  String? selectedMedicine;
   int selectedIndex = -1;
   int matchedPairs = 0;
 
   @override
   void initState() {
     super.initState();
-    _shuffleColors();
+    _shuffleMedicines();
   }
 
-  void _shuffleColors() {
-    shuffledColors = List<Color>.from(colors + colors);
-    shuffledColors.shuffle(Random());
+  void _shuffleMedicines() {
+    shuffledMedicines = List<String>.from(medicineImages + medicineImages);
+    shuffledMedicines.shuffle(Random());
     matchedPairs = 0;
-    selectedColor = null;
+    selectedMedicine = null;
     selectedIndex = -1;
   }
 
-  void _onColorSelected(int index) {
+  void _onMedicineSelected(int index) {
     setState(() {
-      if (selectedColor == null) {
-        selectedColor = shuffledColors[index];
+      if (selectedMedicine == null) {
+        selectedMedicine = shuffledMedicines[index];
         selectedIndex = index;
       } else {
-        if (selectedColor == shuffledColors[index] && selectedIndex != index) {
+        if (selectedMedicine == shuffledMedicines[index] &&
+            selectedIndex != index) {
           matchedPairs++;
-          if (matchedPairs == colors.length) {
+          if (matchedPairs == medicineImages.length) {
             _showGameFinishedDialog();
           }
         }
-        selectedColor = null;
+        selectedMedicine = null;
         selectedIndex = -1;
       }
     });
@@ -65,7 +78,8 @@ class _ColorMatchingGameState extends State<ColorMatchingGame> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: const Text('Game Completed!'),
-        content: const Text('Congratulations! You matched all the colors.'),
+        content: const Text(
+            'Great job! You have successfully matched all medicines.'),
         actions: [
           TextButton(
             onPressed: () {
@@ -74,10 +88,10 @@ class _ColorMatchingGameState extends State<ColorMatchingGame> {
               Navigator.pop(context);
               setState(() {
                 currentItems.add(widget.item);
-                _shuffleColors();
+                _shuffleMedicines();
               });
 
-              showToast('${widget.item} is added to bag!');
+              showToast('${widget.item} has been added to the bag!');
             },
             child: const Text('Continue'),
           ),
@@ -107,7 +121,7 @@ class _ColorMatchingGameState extends State<ColorMatchingGame> {
           showTaskDialog();
         },
       ),
-      appBar: AppBar(title: const Text('Match the Colors')),
+      appBar: AppBar(title: const Text('Match the Medicines')),
       body: GridView.builder(
         padding: const EdgeInsets.all(16),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -115,17 +129,35 @@ class _ColorMatchingGameState extends State<ColorMatchingGame> {
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
         ),
-        itemCount: shuffledColors.length,
+        itemCount: shuffledMedicines.length,
         itemBuilder: (context, index) {
           bool isSelected = index == selectedIndex;
           return GestureDetector(
-            onTap: () => _onColorSelected(index),
+            onTap: () => _onMedicineSelected(index),
             child: Container(
               decoration: BoxDecoration(
-                color: shuffledColors[index],
+                shape: BoxShape.circle,
+                color: medicineColors[shuffledMedicines[index]],
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 4,
+                    offset: Offset(2, 2),
+                  ),
+                ],
                 border: Border.all(
                   color: isSelected ? Colors.black : Colors.transparent,
                   width: 4,
+                ),
+              ),
+              child: Center(
+                child: Image.asset(
+                  shuffledMedicines[index],
+                  height: 100,
+                  color: shuffledMedicines[index] ==
+                          'assets/images/new/tablet_pink.png'
+                      ? Colors.white
+                      : null,
                 ),
               ),
             ),
