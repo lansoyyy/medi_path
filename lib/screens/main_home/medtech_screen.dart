@@ -3,6 +3,7 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
 import 'package:medi_path/screens/game_screens/number.dart';
+import 'package:medi_path/screens/main_home_screen.dart';
 import 'package:medi_path/widgets/text_widget.dart';
 
 class MedTechScreen extends StatefulWidget {
@@ -122,7 +123,8 @@ class _MedTechScreenState extends State<MedTechScreen> {
             left: 500,
             child: GestureDetector(
               onTap: () {
-                Get.back();
+                Get.off(() => const MainHomeScreen(),
+                    transition: Transition.leftToRightWithFade);
               },
               child: Container(
                 width: 280,

@@ -79,7 +79,6 @@ List<String> levelTwoRequiredItems = [
 List currentItems = [];
 
 int currentLevel = 1;
-
 int character = 1;
 
 List<String> patientGreetings = [

@@ -125,24 +125,83 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       },
     );
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.transparent,
-        child: Badge(
-          backgroundColor: Colors.red,
-          label: TextWidget(
-            text: 'Bag',
-            fontSize: 12,
-            color: Colors.white,
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Builder(builder: (context) {
+            int coins = 0;
+            if (currentItems.contains('Pillow') &&
+                currentItems.contains('Food')) {
+              coins += 50;
+            }
+            if (currentItems.contains('Medicine Prescriptions')) {
+              coins += 100;
+            }
+            if (currentItems.contains('Vital Signs Equipment')) {
+              coins += 200;
+            }
+            if (currentItems.contains('Prescribed Medicine (2)')) {
+              coins += 150;
+            }
+            if (currentItems.contains('X-Ray')) {
+              coins += 300;
+            }
+            if (currentItems.contains('Oximeter')) {
+              coins += 250;
+            }
+            return Container(
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.amber.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextWidget(
+                      text: '$coins',
+                      fontSize: 35,
+                      color: Colors.amber,
+                      fontFamily: 'Bold',
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Image.asset(
+                      'assets/images/Medicoin 3d.PNG',
+                      height: 45,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+          const SizedBox(
+            width: 30,
           ),
-          child: Image.asset(
-            'assets/images/open-box.png',
-            height: 50,
+          FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            child: Badge(
+              backgroundColor: Colors.red,
+              label: TextWidget(
+                text: 'Bag',
+                fontSize: 12,
+                color: Colors.white,
+              ),
+              child: Image.asset(
+                'assets/images/open-box.png',
+                height: 50,
+              ),
+            ),
+            onPressed: () {
+              Get.to(() => const BagScreen(),
+                  transition: Transition.leftToRightWithFade);
+            },
           ),
-        ),
-        onPressed: () {
-          Get.to(() => const BagScreen(),
-              transition: Transition.leftToRightWithFade);
-        },
+        ],
       ),
       body: Stack(
         children: [

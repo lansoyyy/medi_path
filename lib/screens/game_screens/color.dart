@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:medi_path/utils/data.dart';
+import 'package:medi_path/widgets/show_dialog.dart';
+import 'package:medi_path/widgets/text_widget.dart';
 import 'package:medi_path/widgets/toast_widget.dart';
 
 class ColorMatchingGame extends StatefulWidget {
@@ -87,6 +89,24 @@ class _ColorMatchingGameState extends State<ColorMatchingGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.transparent,
+        child: Badge(
+          backgroundColor: Colors.red,
+          label: TextWidget(
+            text: 'Task',
+            fontSize: 12,
+            color: Colors.white,
+          ),
+          child: Image.asset(
+            'assets/images/Task sample.PNG',
+            height: 50,
+          ),
+        ),
+        onPressed: () {
+          showTaskDialog();
+        },
+      ),
       appBar: AppBar(title: const Text('Match the Colors')),
       body: GridView.builder(
         padding: const EdgeInsets.all(16),
