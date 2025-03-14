@@ -63,12 +63,13 @@ showTaskDialog() {
                 children: [
                   Positioned(
                     bottom: 190,
-                    left: 45,
+                    left: 40,
                     child: Container(
                       width: 90,
                       height: 93,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Colors.grey[600],
+                        borderRadius: BorderRadius.circular(5),
                         image: DecorationImage(
                             image: AssetImage(
                                 'assets/images/characters/$character.PNG'),

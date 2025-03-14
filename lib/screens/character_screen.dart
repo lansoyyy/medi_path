@@ -24,15 +24,18 @@ class _CharacterScreenState extends State<CharacterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 300,
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      image: DecorationImage(
-                          image: AssetImage(
-                              'assets/images/characters/$character.PNG'),
-                          fit: BoxFit.cover),
+                  Card(
+                    color: Colors.black12,
+                    child: Container(
+                      height: 300,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.black12,
+                        image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/characters/$character.PNG'),
+                            fit: BoxFit.cover),
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -61,30 +64,35 @@ class _CharacterScreenState extends State<CharacterScreen> {
                         height: 5,
                       ),
                       SizedBox(
-                        height: 150,
+                        height: 200,
                         width: 370,
-                        child: Wrap(
-                          children: [
-                            for (int i = 1; i < 15; i++)
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      character = i;
-                                    });
-                                  },
-                                  child: Image.asset(
-                                    'assets/images/characters/$i.PNG',
-                                    height: 60,
+                        child: SingleChildScrollView(
+                          child: Wrap(
+                            children: [
+                              for (int i = 1; i < 15; i++)
+                                Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Card(
+                                    color: Colors.black12,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          character = i;
+                                        });
+                                      },
+                                      child: Image.asset(
+                                        'assets/images/characters/$i.PNG',
+                                        height: 80,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(
-                        height: 75,
+                        height: 20,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
