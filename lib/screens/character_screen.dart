@@ -65,7 +65,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
                         width: 370,
                         child: Wrap(
                           children: [
-                            for (int i = 1; i < 14; i++)
+                            for (int i = 1; i < 15; i++)
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: GestureDetector(
