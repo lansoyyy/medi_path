@@ -12,6 +12,63 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+class _GameButton extends StatelessWidget {
+  const _GameButton({
+    required this.icon,
+    required this.onPressed,
+    this.size = 58,
+    Key? key,
+  }) : super(key: key);
+
+  final IconData icon;
+  final VoidCallback onPressed;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      shape: const CircleBorder(),
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onPressed,
+        child: Ink(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFFF5F6D), // red pink
+                Color(0xFFFFC371), // orange
+              ],
+            ),
+            border: Border.all(color: Colors.white24, width: 1.5),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFFF5F6D).withOpacity(0.45),
+                blurRadius: 16,
+                spreadRadius: 1,
+                offset: const Offset(0, 6),
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Icon(icon, color: Colors.white, size: size * 0.5),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
@@ -52,27 +109,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      floatingActionButton: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                backgroundColor: Colors.white,
-                child: Icon(
-                  !isMuted ? Icons.volume_mute_sharp : Icons.volume_off,
-                  color: Colors.red,
-                ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 8, bottom: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Tooltip(
+              message:
+                  isMuted ? 'Unmute background music' : 'Mute background music',
+              child: _GameButton(
+                icon: isMuted ? Icons.volume_off : Icons.volume_up,
                 onPressed: () async {
                   setState(() {
                     isMuted = !isMuted;
-
                     if (isMuted) {
                       player.stop();
                     } else {
@@ -81,26 +132,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                 },
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              FloatingActionButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                backgroundColor: Colors.white,
-                child: const Icon(
-                  Icons.settings,
-                  color: Colors.red,
-                ),
+            ),
+            const SizedBox(height: 12),
+            Tooltip(
+              message: 'Settings',
+              child: _GameButton(
+                icon: Icons.settings,
                 onPressed: () {
                   Get.to(() => const SettingsScreen(),
                       transition: Transition.leftToRightWithFade);
                 },
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
       body: Stack(
         children: [
@@ -110,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
-                    'assets/images/3.png',
+                    'assets/images/3_new.png',
                   ),
                   fit: BoxFit.cover),
             ),
