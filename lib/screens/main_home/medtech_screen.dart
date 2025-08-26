@@ -1,4 +1,6 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
@@ -15,7 +17,6 @@ class MedTechScreen extends StatefulWidget {
 class _MedTechScreenState extends State<MedTechScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -26,44 +27,362 @@ class _MedTechScreenState extends State<MedTechScreen> {
   }
 
   void showDoctorDialog(BuildContext context) {
+    // Add haptic feedback for immersion
+    HapticFeedback.mediumImpact();
+
+    // Random tip selection for variety
+    final random = math.Random();
+    final tips = [
+      "Accuracy is crucial when measuring vital signs!",
+      "Always calibrate equipment before use.",
+      "Document all readings immediately to prevent errors.",
+      "Maintain a clean and organized workspace for efficiency.",
+      "Double-check patient information before recording data."
+    ];
+    final randomTip = tips[random.nextInt(tips.length)];
+
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
+        final Size screenSize = MediaQuery.of(context).size;
+        final double dialogWidth =
+            screenSize.width * 0.80 > 320 ? 320 : screenSize.width * 0.80;
+
         return Dialog(
+          backgroundColor: Colors.transparent,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 60), // Space for the doctor's image
-                    TextWidget(
-                      text:
-                          '🧑‍🔬 Medtech John: "Hello! Please check the patient’s vital signs, including blood pressure, heart rate, xray and temperature."',
-                      fontSize: 14,
+          insetPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+          child: TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0.0, end: 1.0),
+            duration: const Duration(milliseconds: 650),
+            curve: Curves.elasticOut,
+            builder: (context, value, child) {
+              return Transform.scale(
+                scale: value,
+                child: child,
+              );
+            },
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                // Main dialog container with game-style design
+                Container(
+                  width: dialogWidth,
+                  padding: const EdgeInsets.fromLTRB(12, 16, 12, 12),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF9C27B0), Color(0xFF673AB7)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Got it!'),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF9C27B0).withOpacity(0.5),
+                        blurRadius: 20,
+                        spreadRadius: 1,
+                        offset: const Offset(0, 10),
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.5),
+                      width: 2,
                     ),
-                  ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Mission title with game-style design
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 6, horizontal: 12),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: const Text(
+                          'MISSION',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1,
+                            shadows: [
+                              Shadow(
+                                  color: Colors.black54,
+                                  offset: Offset(1, 1),
+                                  blurRadius: 3),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Dialog bubble for medtech's speech
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                // Medtech icon
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF9C27B0)
+                                        .withOpacity(0.2),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.biotech,
+                                    color: Color(0xFF9C27B0),
+                                    size: 14,
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                // Medtech name with styling
+                                const Text(
+                                  'Medtech John',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                    color: Color(0xFF9C27B0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            // Medtech's mission text
+                            const Text(
+                              'Hello! Please check the patient\'s vital signs, including blood pressure, heart rate, xray and temperature.',
+                              style: TextStyle(
+                                fontSize: 11,
+                                height: 1.3,
+                                color: Colors.black87,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            // Game tip with icon
+                            Container(
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFF9C4),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: const Color(0xFFFFD54F),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(top: 1),
+                                    child: Icon(
+                                      Icons.lightbulb,
+                                      color: Color(0xFFFFB300),
+                                      size: 12,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: Text(
+                                      randomTip,
+                                      style: const TextStyle(
+                                        fontSize: 9,
+                                        color: Color(0xFF5D4037),
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Game-style accept button
+                      TweenAnimationBuilder<double>(
+                        tween: Tween(begin: 0.8, end: 1.0),
+                        duration: const Duration(milliseconds: 600),
+                        curve: Curves.easeInOut,
+                        builder: (context, value, child) {
+                          return Transform.scale(
+                            scale: value,
+                            child: child,
+                          );
+                        },
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              Navigator.pop(context);
+                            },
+                            borderRadius: BorderRadius.circular(30),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFF4CAF50),
+                                    Color(0xFF2E7D32)
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(30),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF4CAF50)
+                                        .withOpacity(0.4),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 5),
+                                  ),
+                                ],
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.5),
+                                  width: 2,
+                                ),
+                              ),
+                              child: const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'ACCEPT',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Positioned(
-                top: -60,
-                left: 80,
-                child: CircleAvatar(
-                  radius: 60,
-                  backgroundColor: Colors.white,
-                  child: Image.asset('assets/images/medtech.png'),
+
+                // Medtech avatar with animation
+                Positioned(
+                  top: -50,
+                  left: 0,
+                  right: 0,
+                  child: TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0.0, end: 1.0),
+                    duration: const Duration(milliseconds: 800),
+                    curve: Curves.elasticOut,
+                    builder: (context, value, child) {
+                      return Transform.scale(
+                        scale: value,
+                        child: child,
+                      );
+                    },
+                    child: Center(
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: const LinearGradient(
+                            colors: [Colors.white, Color(0xFFE3F2FD)],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 15,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                          border: Border.all(
+                            color: const Color(0xFF9C27B0),
+                            width: 4,
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            'assets/images/medtech.png',
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+
+                // Decorative elements (floating particles)
+                ...List.generate(3, (index) {
+                  return Positioned(
+                    top: 80.0 + (index * 30),
+                    right: 8.0 + (index * 5),
+                    child: TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      duration: Duration(milliseconds: 500 + (index * 200)),
+                      builder: (context, value, child) {
+                        return Opacity(
+                          opacity: value * 0.5,
+                          child: Transform.rotate(
+                            angle: index * (math.pi / 6),
+                            child: Icon(
+                              [
+                                Icons.favorite,
+                                Icons.healing,
+                                Icons.health_and_safety
+                              ][index],
+                              color: Colors.white.withOpacity(0.3),
+                              size: 10 + (index * 2.0),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }),
+              ],
+            ),
           ),
         );
       },
