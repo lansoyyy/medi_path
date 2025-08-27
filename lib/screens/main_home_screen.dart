@@ -25,7 +25,7 @@ class _MainHomeScreenState extends State<MainHomeScreen>
   late AnimationController _floatController;
   late Animation<double> _pulseAnimation;
   late Animation<double> _floatAnimation;
-  bool _showRoomHints = true;
+  bool _showRoomHints = false;
 
   @override
   void initState() {
@@ -316,7 +316,7 @@ class _MainHomeScreenState extends State<MainHomeScreen>
               duration: const Duration(milliseconds: 300),
               height: 50,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
@@ -682,7 +682,7 @@ class _MainHomeScreenState extends State<MainHomeScreen>
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [
                           const Color(0xFF6A5ACD),
                           const Color(0xFF9370DB),
