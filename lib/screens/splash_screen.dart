@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medi_path/screens/home_screen.dart';
+import 'package:medi_path/widgets/text_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     playAudio();
     Timer(const Duration(seconds: 4), () async {
-      // Test if location services are enabled.
       Get.off(() => const HomeScreen(),
           transition: Transition.leftToRightWithFade);
     });
@@ -53,15 +53,26 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(
-                'assets/images/1.png',
-              ),
-              fit: BoxFit.cover),
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/Game logo.PNG',
+              height: 150,
+            ),
+            SizedBox(
+              height: 12.5,
+            ),
+            TextWidget(
+              text: 'by: ROOSTERCAT LLC GAMES',
+              fontSize: 12,
+              color: Colors.white,
+              fontFamily: 'Bold',
+            ),
+          ],
         ),
       ),
     );
