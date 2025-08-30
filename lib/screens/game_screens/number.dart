@@ -379,7 +379,12 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
         },
       ),
       appBar: AppBar(
-        title: const Text('Match the Numbers'),
+        title: TextWidget(
+          text:
+              'Find matching pairs of numbers. Tap on two cards to see if they match!',
+          fontSize: 14,
+          fontFamily: 'Bold',
+        ),
         actions: [
           // Game stats
           Padding(
@@ -455,7 +460,6 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
                       return Transform(
                         transform: Matrix4.identity()
                           ..setEntry(3, 2, 0.001)
-                          ..rotateY(_flipAnimation.value * pi)
                           ..translate(_shakeAnimation.value *
                               (sin(_shakeAnimation.value * 20) * 5)),
                         alignment: Alignment.center,

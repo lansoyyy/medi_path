@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
+import 'package:medi_path/screens/game_screens/number.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
 import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/text_widget.dart';
@@ -422,9 +423,18 @@ class _PatientScreenState extends State<PatientScreen> {
                   barrierDismissible: true,
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              const ColorMatchingGame(item: 'Oximeter')));
+                      final random = math.Random();
+                      int value = random.nextInt(2);
+
+                      if (value == 0) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                const ColorMatchingGame(item: 'Oximeter')));
+                      } else {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                NumberMatchingGame(item: 'Oximeter')));
+                      }
                     },
                     child: Container(
                       height: 400,

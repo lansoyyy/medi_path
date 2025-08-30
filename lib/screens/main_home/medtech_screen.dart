@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
+import 'package:medi_path/screens/game_screens/number.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
 import 'package:medi_path/widgets/text_widget.dart';
 
@@ -464,8 +465,16 @@ class XRay extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const ColorMatchingGame(item: 'X-Ray')));
+        final random = math.Random();
+        int value = random.nextInt(2);
+
+        if (value == 0) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const ColorMatchingGame(item: 'X-Ray')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => NumberMatchingGame(item: 'X-Ray')));
+        }
       },
       child: Container(
         width: double.infinity,
@@ -513,9 +522,18 @@ class _BloodTestState extends State<BloodTest> {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  const ColorMatchingGame(item: 'Vital Signs Equipment')));
+          final random = math.Random();
+          int value = random.nextInt(2);
+
+          if (value == 0) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    const ColorMatchingGame(item: 'Vital Signs Equipment')));
+          } else {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    NumberMatchingGame(item: 'Vital Signs Equipment')));
+          }
         },
         child: Container(
           width: double.infinity,

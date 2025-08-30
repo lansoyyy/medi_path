@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
+import 'package:medi_path/screens/game_screens/number.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
 import 'package:medi_path/widgets/text_widget.dart';
 
@@ -457,9 +458,18 @@ class Medicine extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                const ColorMatchingGame(item: 'Prescribed Medicine (2)')));
+        final random = math.Random();
+        int value = random.nextInt(2);
+
+        if (value == 0) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  const ColorMatchingGame(item: 'Prescribed Medicine (2)')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  NumberMatchingGame(item: 'Prescribed Medicine (2)')));
+        }
       },
       child: Container(
         width: double.infinity,
