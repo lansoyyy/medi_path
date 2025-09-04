@@ -410,7 +410,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
-                    "assets/images/PHARMACY ROOM.png",
+                    "assets/images/PHARMACY ROOM.jpeg",
                   ),
                   fit: BoxFit.fitHeight),
             ),

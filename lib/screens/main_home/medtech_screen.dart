@@ -402,7 +402,7 @@ class _MedTechScreenState extends State<MedTechScreen> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
-                    "assets/images/MEDTECH ROOM.png",
+                    "assets/images/MEDTECH ROOM.jpeg",
                   ),
                   fit: BoxFit.fitHeight),
             ),

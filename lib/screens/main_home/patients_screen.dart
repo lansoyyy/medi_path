@@ -409,7 +409,7 @@ class _PatientScreenState extends State<PatientScreen> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
-                    "assets/images/PATIENT'S ROOM.png",
+                    "assets/images/PATIENT'S ROOM.jpeg",
                   ),
                   fit: BoxFit.fitHeight),
             ),
