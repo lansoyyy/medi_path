@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:medi_path/screens/bag_screen.dart';
 import 'package:medi_path/screens/main_home/doctors_screen.dart';
 import 'package:medi_path/screens/main_home/medtech_screen.dart';
@@ -26,6 +27,8 @@ class _MainHomeScreenState extends State<MainHomeScreen>
   late Animation<double> _pulseAnimation;
   late Animation<double> _floatAnimation;
   bool _showRoomHints = false;
+  final _storage = GetStorage();
+  static const _taskDialogShownKey = 'taskDialogShown';
 
   @override
   void initState() {
@@ -60,7 +63,16 @@ class _MainHomeScreenState extends State<MainHomeScreen>
 
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        showTaskDialog();
+        // Check if the task dialog has been shown before using persistent storage
+        final bool hasShownTaskDialog =
+            _storage.read(_taskDialogShownKey) ?? false;
+
+        // Only show the task dialog if it hasn't been shown before
+        if (!hasShownTaskDialog) {
+          showTaskDialog();
+          // Save the flag to persistent storage
+          _storage.write(_taskDialogShownKey, true);
+        }
         // Auto-hide room hints after 5 seconds
         Future.delayed(const Duration(seconds: 5), () {
           if (mounted) {
