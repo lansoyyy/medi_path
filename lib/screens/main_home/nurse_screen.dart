@@ -186,9 +186,11 @@ class _NurseScreenState extends State<NurseScreen> {
                             ),
                             const SizedBox(height: 6),
                             // Nurse's mission text
-                            const Text(
-                              'Hi there! We need to make our patient comfortable. Could you please get a pillow and some food for them?',
-                              style: TextStyle(
+                            Text(
+                              currentLevel == 3
+                                  ? 'Emergency! We need critical medical supplies. Please get the surgical kit and emergency injection for the patient!'
+                                  : 'Hi there! We need to make our patient comfortable. Could you please get a pillow and some food for them?',
+                              style: const TextStyle(
                                 fontSize: 11,
                                 height: 1.3,
                                 color: Colors.black87,
@@ -453,6 +455,40 @@ class _NurseScreenState extends State<NurseScreen> {
               ),
             ),
           ),
+          // Level 3 items - Surgical Kit
+          if (currentLevel == 3)
+            Positioned(
+              bottom: 200,
+              left: 50,
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(() => const SurgicalKit(),
+                      transition: Transition.circularReveal);
+                },
+                child: Container(
+                  width: 150,
+                  height: 150,
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
+          // Level 3 items - Emergency Injection
+          if (currentLevel == 3)
+            Positioned(
+              bottom: 250,
+              right: 100,
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(() => const EmergencyInjection(),
+                      transition: Transition.circularReveal);
+                },
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
           Positioned(
             bottom: 0,
             left: 500,
@@ -500,6 +536,109 @@ class Fridge extends StatelessWidget {
                 fit: BoxFit.cover,
                 image: AssetImage(
                     'assets/images/Screenshot_2025-01-31_221338-removebg-preview.png'))),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, right: 50),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.red, shape: BoxShape.circle),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 50,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SurgicalKit extends StatelessWidget {
+  const SurgicalKit({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        final random = math.Random();
+        int value = random.nextInt(2);
+
+        if (value == 0) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  const ColorMatchingGame(item: 'Surgical Kit')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => NumberMatchingGame(item: 'Surgical Kit')));
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/new/first-aid-kit.png'))),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, right: 50),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.red, shape: BoxShape.circle),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 50,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EmergencyInjection extends StatelessWidget {
+  const EmergencyInjection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        final random = math.Random();
+        int value = random.nextInt(2);
+
+        if (value == 0) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  const ColorMatchingGame(item: 'Emergency Injection')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  NumberMatchingGame(item: 'Emergency Injection')));
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/new/injection_vial.png'))),
         child: Padding(
           padding: const EdgeInsets.only(top: 20, right: 50),
           child: Align(

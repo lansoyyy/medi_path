@@ -6,6 +6,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
 import 'package:medi_path/screens/game_screens/number.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
+import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/text_widget.dart';
 
 class MedTechScreen extends StatefulWidget {
@@ -184,9 +185,11 @@ class _MedTechScreenState extends State<MedTechScreen> {
                             ),
                             const SizedBox(height: 6),
                             // Medtech's mission text
-                            const Text(
-                              'Hello! Please check the patient\'s vital signs, including blood pressure, heart rate, xray and temperature.',
-                              style: TextStyle(
+                            Text(
+                              currentLevel == 3
+                                  ? 'Critical situation! We need to monitor the patient continuously. Please get the patient monitor and check vital signs!'
+                                  : 'Hello! Please check the patient\'s vital signs, including blood pressure, heart rate, xray and temperature.',
+                              style: const TextStyle(
                                 fontSize: 11,
                                 height: 1.3,
                                 color: Colors.black87,
@@ -452,6 +455,23 @@ class _MedTechScreenState extends State<MedTechScreen> {
               ),
             ),
           ),
+          // Level 3 item - Patient Monitor
+          if (currentLevel == 3)
+            Positioned(
+              bottom: 50,
+              right: 50,
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(() => const PatientMonitor(),
+                      transition: Transition.circularReveal);
+                },
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -558,6 +578,58 @@ class _BloodTestState extends State<BloodTest> {
                     color: Colors.white,
                     size: 50,
                   ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PatientMonitor extends StatelessWidget {
+  const PatientMonitor({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        final random = math.Random();
+        int value = random.nextInt(2);
+
+        if (value == 0) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  const ColorMatchingGame(item: 'Patient Monitor')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  NumberMatchingGame(item: 'Patient Monitor')));
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/new/tablet_pink.png'))),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, right: 50),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.red, shape: BoxShape.circle),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 50,
                 ),
               ),
             ),

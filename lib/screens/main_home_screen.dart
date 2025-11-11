@@ -135,7 +135,7 @@ class _MainHomeScreenState extends State<MainHomeScreen>
                   ],
                 ));
       }
-    } else {
+    } else if (currentLevel == 2) {
       if (currentItems.contains('Pillow') &&
           currentItems.contains('Food') &&
           currentItems.contains('Medicine Prescriptions') &&
@@ -153,20 +153,60 @@ class _MainHomeScreenState extends State<MainHomeScreen>
                         fontFamily: 'QBold', fontWeight: FontWeight.bold),
                   ),
                   content: const Text(
-                    'You completed the whole Challenge!',
+                    'You completed Level 2! Ready for the ultimate challenge?',
+                    style: TextStyle(fontFamily: 'QRegular'),
+                  ),
+                  actions: <Widget>[
+                    MaterialButton(
+                      onPressed: () async {
+                        setState(() {
+                          currentLevel = 3;
+                        });
+
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'Continue Next Level',
+                        style: TextStyle(
+                            fontFamily: 'QRegular',
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ));
+      }
+    } else {
+      if (currentItems.contains('Pillow') &&
+          currentItems.contains('Food') &&
+          currentItems.contains('Medicine Prescriptions') &&
+          currentItems.contains('Vital Signs Equipment') &&
+          currentItems.contains('Prescribed Medicine (2)') &&
+          currentItems.contains('X-Ray') &&
+          currentItems.contains('Oximeter') &&
+          currentItems.contains('Surgical Kit') &&
+          currentItems.contains('Emergency Injection') &&
+          currentItems.contains('Patient Monitor')) {
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => AlertDialog(
+                  title: const Text(
+                    '🎉 GAME COMPLETED! 🎉',
+                    style: TextStyle(
+                        fontFamily: 'QBold', fontWeight: FontWeight.bold),
+                  ),
+                  content: const Text(
+                    'Congratulations! You are now a Master Medical Professional!\nYou have completed all levels and saved all patients!',
                     style: TextStyle(fontFamily: 'QRegular'),
                   ),
                   actions: <Widget>[
                     MaterialButton(
                       onPressed: () async {
                         Navigator.pop(context);
-                        // Navigator.of(context).pushReplacement(
-                        //   MaterialPageRoute(
-                        //       builder: (context) => const LoginScreen()),
-                        // );
+                        // Could add completion screen or reset game here
                       },
                       child: const Text(
-                        'Close',
+                        'Finish Game',
                         style: TextStyle(
                             fontFamily: 'QRegular',
                             fontWeight: FontWeight.bold),
@@ -322,6 +362,15 @@ class _MainHomeScreenState extends State<MainHomeScreen>
             }
             if (currentItems.contains('Oximeter')) {
               coins += 250;
+            }
+            if (currentItems.contains('Surgical Kit')) {
+              coins += 400; // Higher value for Level 3 items
+            }
+            if (currentItems.contains('Emergency Injection')) {
+              coins += 350;
+            }
+            if (currentItems.contains('Patient Monitor')) {
+              coins += 450;
             }
 
             return AnimatedContainer(
@@ -747,9 +796,14 @@ class _MainHomeScreenState extends State<MainHomeScreen>
                 border: Border.all(color: Colors.white24, width: 1),
               ),
               child: Builder(builder: (context) {
-                List<String> requiredItems = currentLevel == 1
-                    ? levelOneRequiredItems
-                    : levelTwoRequiredItems;
+                List<String> requiredItems;
+                if (currentLevel == 1) {
+                  requiredItems = levelOneRequiredItems;
+                } else if (currentLevel == 2) {
+                  requiredItems = levelTwoRequiredItems;
+                } else {
+                  requiredItems = levelThreeRequiredItems;
+                }
                 int completedItems = requiredItems
                     .where((item) => currentItems.contains(item))
                     .length;

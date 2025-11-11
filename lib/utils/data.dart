@@ -76,6 +76,69 @@ List<String> levelTwoRequiredItems = [
   'Oximeter'
 ];
 
+List<Map<String, dynamic>> levelThreeTasks = [
+  {
+    'room': 'Nurse Room',
+    'task': 'Get the pillow and get food.',
+    'isDone': currentItems.contains('Pillow') && currentItems.contains('Food')
+        ? true
+        : false,
+  },
+  {
+    'room': 'Doctor Room',
+    'task': 'Get the medicine prescriptions.',
+    'isDone': currentItems.contains('Medicine Prescriptions') ? true : false,
+  },
+  {
+    'room': 'Medtech Room',
+    'task':
+        'Check the patient\'s vital signs\n(blood pressure, heart rate,\nand temperature).',
+    'isDone': currentItems.contains('Vital Signs Equipment') ? true : false,
+  },
+  {
+    'room': 'Pharmacy Room',
+    'task': 'Get the prescribed medicine.',
+    'isDone': currentItems.contains('Prescribed Medicine (2)') ? true : false,
+  },
+  {
+    'room': 'Medtech Room',
+    'task': 'Get the x-ray of the patient.',
+    'isDone': currentItems.contains('X-Ray') ? true : false,
+  },
+  {
+    'room': 'Patients Room',
+    'task': "Get the patient's pulse rate",
+    'isDone': currentItems.contains('Oximeter') ? true : false,
+  },
+  {
+    'room': 'Doctor Room',
+    'task': 'Get the surgical equipment for emergency procedure.',
+    'isDone': currentItems.contains('Surgical Kit') ? true : false,
+  },
+  {
+    'room': 'Pharmacy Room',
+    'task': 'Get the emergency injection medication.',
+    'isDone': currentItems.contains('Emergency Injection') ? true : false,
+  },
+  {
+    'room': 'Nurse Room',
+    'task': 'Get the patient monitoring system.',
+    'isDone': currentItems.contains('Patient Monitor') ? true : false,
+  },
+];
+List<String> levelThreeRequiredItems = [
+  'Pillow',
+  'Food',
+  'Medicine Prescriptions',
+  'Vital Signs Equipment',
+  'Prescribed Medicine (2)',
+  'X-Ray',
+  'Oximeter',
+  'Surgical Kit',
+  'Emergency Injection',
+  'Patient Monitor'
+];
+
 List currentItems = [];
 
 int currentLevel = 1;
