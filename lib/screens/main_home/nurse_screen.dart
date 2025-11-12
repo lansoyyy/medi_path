@@ -187,9 +187,11 @@ class _NurseScreenState extends State<NurseScreen> {
                             const SizedBox(height: 6),
                             // Nurse's mission text
                             Text(
-                              currentLevel == 3
-                                  ? 'Emergency! We need critical medical supplies. Please get the surgical kit and emergency injection for the patient!'
-                                  : 'Hi there! We need to make our patient comfortable. Could you please get a pillow and some food for them?',
+                              currentLevel == 4
+                                  ? 'Critical surgery preparation! We need the operating room setup ready immediately. Please prepare all surgical equipment!'
+                                  : currentLevel == 3
+                                      ? 'Emergency! We need critical medical supplies. Please get the surgical kit and emergency injection for the patient!'
+                                      : 'Hi there! We need to make our patient comfortable. Could you please get a pillow and some food for them?',
                               style: const TextStyle(
                                 fontSize: 11,
                                 height: 1.3,
@@ -489,6 +491,23 @@ class _NurseScreenState extends State<NurseScreen> {
                 ),
               ),
             ),
+          // Level 4 item - Operating Room Setup
+          if (currentLevel == 4)
+            Positioned(
+              bottom: 180,
+              left: 250,
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(() => const OperatingRoomSetup(),
+                      transition: Transition.circularReveal);
+                },
+                child: Container(
+                  width: 180,
+                  height: 180,
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
           Positioned(
             bottom: 0,
             left: 500,
@@ -689,6 +708,58 @@ class Pillow extends StatelessWidget {
             image: DecorationImage(
                 fit: BoxFit.fitHeight,
                 image: AssetImage('assets/images/NURSE ROOM - Copy.png'))),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, right: 50),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.red, shape: BoxShape.circle),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 50,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class OperatingRoomSetup extends StatelessWidget {
+  const OperatingRoomSetup({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        final random = math.Random();
+        int value = random.nextInt(2);
+
+        if (value == 0) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  const ColorMatchingGame(item: 'Operating Room Setup')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  NumberMatchingGame(item: 'Operating Room Setup')));
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/new/first-aid-kit.png'))),
         child: Padding(
           padding: const EdgeInsets.only(top: 20, right: 50),
           child: Align(

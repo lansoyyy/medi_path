@@ -270,17 +270,51 @@ showTaskDialog() {
                                                 height: 20,
                                               ),
                                             ]
-                                          : [
-                                              for (int i = 0;
-                                                  i < levelTwoTasks.length;
-                                                  i++)
-                                                _buildGameTaskItem(
-                                                    i, levelTwoTasks[i]['task'],
-                                                    isLevelTwo: true),
-                                              SizedBox(
-                                                height: 20,
-                                              ),
-                                            ]),
+                                          : currentLevel == 2
+                                              ? [
+                                                  for (int i = 0;
+                                                      i < levelTwoTasks.length;
+                                                      i++)
+                                                    _buildGameTaskItem(
+                                                        i,
+                                                        levelTwoTasks[i]
+                                                            ['task'],
+                                                        isLevelTwo: true),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                ]
+                                              : currentLevel == 3
+                                                  ? [
+                                                      for (int i = 0;
+                                                          i <
+                                                              levelThreeTasks
+                                                                  .length;
+                                                          i++)
+                                                        _buildGameTaskItem(
+                                                            i,
+                                                            levelThreeTasks[i]
+                                                                ['task'],
+                                                            isLevelThree: true),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                    ]
+                                                  : [
+                                                      for (int i = 0;
+                                                          i <
+                                                              levelFourTasks
+                                                                  .length;
+                                                          i++)
+                                                        _buildGameTaskItem(
+                                                            i,
+                                                            levelFourTasks[i]
+                                                                ['task'],
+                                                            isLevelFour: true),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                    ]),
                                 ),
                               ),
                             ),
@@ -375,8 +409,11 @@ showTaskDialog() {
 }
 
 Widget _buildGameTaskItem(int index, String taskText,
-    {bool isLevelTwo = false}) {
-  bool isCompleted = _checkTaskCompletion(index, isLevelTwo);
+    {bool isLevelTwo = false,
+    bool isLevelThree = false,
+    bool isLevelFour = false}) {
+  bool isCompleted =
+      _checkTaskCompletion(index, isLevelTwo, isLevelThree, isLevelFour);
 
   return Padding(
     padding: const EdgeInsets.only(bottom: 8),
@@ -506,22 +543,33 @@ Widget _buildGameTaskItem(int index, String taskText,
   );
 }
 
-bool _checkTaskCompletion(int index, bool isLevelTwo) {
-  if (!isLevelTwo) {
-    // Level 1 task completion logic
+bool _checkTaskCompletion(
+    int index, bool isLevelTwo, bool isLevelThree, bool isLevelFour) {
+  if (isLevelFour) {
+    // Level 4 task completion logic
     switch (index) {
       case 0:
-        return currentItems.contains('Pillow') && currentItems.contains('Food');
+        return currentItems.contains('Medical Records');
       case 1:
-        return currentItems.contains('Medicine Prescriptions');
+        return currentItems.contains('Operating Room Setup');
       case 2:
-        return currentItems.contains('Vital Signs Equipment');
-      case 3:
-        return currentItems.contains('Prescribed Medicine (2)');
+        return currentItems.contains('Specialized Medication Kit');
       default:
         return false;
     }
-  } else {
+  } else if (isLevelThree) {
+    // Level 3 task completion logic
+    switch (index) {
+      case 0:
+        return currentItems.contains('Surgical Kit');
+      case 1:
+        return currentItems.contains('Emergency Injection');
+      case 2:
+        return currentItems.contains('Patient Monitor');
+      default:
+        return false;
+    }
+  } else if (isLevelTwo) {
     // Level 2 task completion logic
     switch (index) {
       case 0:
@@ -536,6 +584,20 @@ bool _checkTaskCompletion(int index, bool isLevelTwo) {
         return currentItems.contains('X-Ray');
       case 5:
         return currentItems.contains('Oximeter');
+      default:
+        return false;
+    }
+  } else {
+    // Level 1 task completion logic
+    switch (index) {
+      case 0:
+        return currentItems.contains('Pillow') && currentItems.contains('Food');
+      case 1:
+        return currentItems.contains('Medicine Prescriptions');
+      case 2:
+        return currentItems.contains('Vital Signs Equipment');
+      case 3:
+        return currentItems.contains('Prescribed Medicine (2)');
       default:
         return false;
     }

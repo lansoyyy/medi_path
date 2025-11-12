@@ -186,9 +186,13 @@ class _DoctorScreenState extends State<DoctorScreen> {
                             ),
                             const SizedBox(height: 6),
                             // Doctor's mission text
-                            const Text(
-                              'Hello! Please get the medicine prescriptions from the pharmacy for our patient.',
-                              style: TextStyle(
+                            Text(
+                              currentLevel == 4
+                                  ? 'Advanced case! We need complete medical records for this complex surgery. Please retrieve them from the reception.'
+                                  : currentLevel == 3
+                                      ? 'Emergency situation! We need surgical kits and emergency injections prepared immediately!'
+                                      : 'Hello! Please get the medicine prescriptions from the pharmacy for our patient.',
+                              style: const TextStyle(
                                 fontSize: 11,
                                 height: 1.3,
                                 color: Colors.black87,
@@ -476,6 +480,59 @@ class _DoctorScreenState extends State<DoctorScreen> {
               ),
             ),
           ),
+          // Level 4 Medical Records item
+          if (currentLevel == 4)
+            Positioned(
+              bottom: 100,
+              left: 200,
+              child: GestureDetector(
+                onTap: () {
+                  Get.dialog(
+                    barrierDismissible: true,
+                    Container(
+                      height: 400,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fitHeight,
+                          image: AssetImage(
+                            'assets/images/file1.png',
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20, right: 50),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                color: Colors.red, shape: BoxShape.circle),
+                            child: IconButton(
+                              onPressed: () {
+                                Get.back();
+                                setState(() {
+                                  currentItems.add('Medical Records');
+                                });
+                                showToast('Medical Records is added to bag!');
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 50,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 100,
+                  height: 80,
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
         ],
       ),
     );

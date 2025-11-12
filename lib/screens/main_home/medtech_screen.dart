@@ -186,9 +186,11 @@ class _MedTechScreenState extends State<MedTechScreen> {
                             const SizedBox(height: 6),
                             // Medtech's mission text
                             Text(
-                              currentLevel == 3
-                                  ? 'Critical situation! We need to monitor the patient continuously. Please get the patient monitor and check vital signs!'
-                                  : 'Hello! Please check the patient\'s vital signs, including blood pressure, heart rate, xray and temperature.',
+                              currentLevel == 4
+                                  ? 'Advanced medication preparation! We need specialized medication kits for the complex surgery. Please prepare them immediately!'
+                                  : currentLevel == 3
+                                      ? 'Critical situation! We need to monitor the patient continuously. Please get the patient monitor and check vital signs!'
+                                      : 'Hello! Please check the patient\'s vital signs, including blood pressure, heart rate, xray and temperature.',
                               style: const TextStyle(
                                 fontSize: 11,
                                 height: 1.3,
@@ -472,6 +474,23 @@ class _MedTechScreenState extends State<MedTechScreen> {
                 ),
               ),
             ),
+          // Level 4 item - Specialized Medication Kit
+          if (currentLevel == 4)
+            Positioned(
+              bottom: 80,
+              left: 350,
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(() => const SpecializedMedicationKit(),
+                      transition: Transition.circularReveal);
+                },
+                child: Container(
+                  width: 180,
+                  height: 180,
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -615,6 +634,58 @@ class PatientMonitor extends StatelessWidget {
             image: DecorationImage(
                 fit: BoxFit.cover,
                 image: AssetImage('assets/images/new/tablet_pink.png'))),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, right: 50),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.red, shape: BoxShape.circle),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 50,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SpecializedMedicationKit extends StatelessWidget {
+  const SpecializedMedicationKit({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        final random = math.Random();
+        int value = random.nextInt(2);
+
+        if (value == 0) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  const ColorMatchingGame(item: 'Specialized Medication Kit')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  NumberMatchingGame(item: 'Specialized Medication Kit')));
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/new/syrup_bottle.png'))),
         child: Padding(
           padding: const EdgeInsets.only(top: 20, right: 50),
           child: Align(

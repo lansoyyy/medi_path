@@ -139,6 +139,88 @@ List<String> levelThreeRequiredItems = [
   'Patient Monitor'
 ];
 
+List<Map<String, dynamic>> levelFourTasks = [
+  {
+    'room': 'Nurse Room',
+    'task': 'Get pillow and get food.',
+    'isDone': currentItems.contains('Pillow') && currentItems.contains('Food')
+        ? true
+        : false,
+  },
+  {
+    'room': 'Doctor Room',
+    'task': 'Get medicine prescriptions.',
+    'isDone': currentItems.contains('Medicine Prescriptions') ? true : false,
+  },
+  {
+    'room': 'Medtech Room',
+    'task':
+        'Check the patient\'s vital signs\n(blood pressure, heart rate,\nand temperature).',
+    'isDone': currentItems.contains('Vital Signs Equipment') ? true : false,
+  },
+  {
+    'room': 'Pharmacy Room',
+    'task': 'Get the prescribed medicine.',
+    'isDone': currentItems.contains('Prescribed Medicine (2)') ? true : false,
+  },
+  {
+    'room': 'Medtech Room',
+    'task': 'Get x-ray of the patient.',
+    'isDone': currentItems.contains('X-Ray') ? true : false,
+  },
+  {
+    'room': 'Patients Room',
+    'task': "Get the patient's pulse rate",
+    'isDone': currentItems.contains('Oximeter') ? true : false,
+  },
+  {
+    'room': 'Doctor Room',
+    'task': 'Get the surgical equipment for emergency procedure.',
+    'isDone': currentItems.contains('Surgical Kit') ? true : false,
+  },
+  {
+    'room': 'Pharmacy Room',
+    'task': 'Get the emergency injection medication.',
+    'isDone': currentItems.contains('Emergency Injection') ? true : false,
+  },
+  {
+    'room': 'Nurse Room',
+    'task': 'Get the patient monitoring system.',
+    'isDone': currentItems.contains('Patient Monitor') ? true : false,
+  },
+  {
+    'room': 'Reception',
+    'task': 'Get the patient medical records and history.',
+    'isDone': currentItems.contains('Medical Records') ? true : false,
+  },
+  {
+    'room': 'Doctor Room',
+    'task': 'Prepare the operating room for surgery.',
+    'isDone': currentItems.contains('Operating Room Setup') ? true : false,
+  },
+  {
+    'room': 'Pharmacy Room',
+    'task': 'Get the specialized medication kit.',
+    'isDone':
+        currentItems.contains('Specialized Medication Kit') ? true : false,
+  },
+];
+List<String> levelFourRequiredItems = [
+  'Pillow',
+  'Food',
+  'Medicine Prescriptions',
+  'Vital Signs Equipment',
+  'Prescribed Medicine (2)',
+  'X-Ray',
+  'Oximeter',
+  'Surgical Kit',
+  'Emergency Injection',
+  'Patient Monitor',
+  'Medical Records',
+  'Operating Room Setup',
+  'Specialized Medication Kit'
+];
+
 List currentItems = [];
 
 int currentLevel = 1;

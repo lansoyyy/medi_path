@@ -175,7 +175,7 @@ class _MainHomeScreenState extends State<MainHomeScreen>
                   ],
                 ));
       }
-    } else {
+    } else if (currentLevel == 3) {
       if (currentItems.contains('Pillow') &&
           currentItems.contains('Food') &&
           currentItems.contains('Medicine Prescriptions') &&
@@ -186,6 +186,52 @@ class _MainHomeScreenState extends State<MainHomeScreen>
           currentItems.contains('Surgical Kit') &&
           currentItems.contains('Emergency Injection') &&
           currentItems.contains('Patient Monitor')) {
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => AlertDialog(
+                  title: const Text(
+                    'Level Completed!',
+                    style: TextStyle(
+                        fontFamily: 'QBold', fontWeight: FontWeight.bold),
+                  ),
+                  content: const Text(
+                    'Amazing! You completed Level 3! Ready for the final challenge?',
+                    style: TextStyle(fontFamily: 'QRegular'),
+                  ),
+                  actions: <Widget>[
+                    MaterialButton(
+                      onPressed: () async {
+                        setState(() {
+                          currentLevel = 4;
+                        });
+
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'Continue Next Level',
+                        style: TextStyle(
+                            fontFamily: 'QRegular',
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ));
+      }
+    } else {
+      if (currentItems.contains('Pillow') &&
+          currentItems.contains('Food') &&
+          currentItems.contains('Medicine Prescriptions') &&
+          currentItems.contains('Vital Signs Equipment') &&
+          currentItems.contains('Prescribed Medicine (2)') &&
+          currentItems.contains('X-Ray') &&
+          currentItems.contains('Oximeter') &&
+          currentItems.contains('Surgical Kit') &&
+          currentItems.contains('Emergency Injection') &&
+          currentItems.contains('Patient Monitor') &&
+          currentItems.contains('Medical Records') &&
+          currentItems.contains('Operating Room Setup') &&
+          currentItems.contains('Specialized Medication Kit')) {
         showDialog(
             context: context,
             barrierDismissible: false,
@@ -371,6 +417,15 @@ class _MainHomeScreenState extends State<MainHomeScreen>
             }
             if (currentItems.contains('Patient Monitor')) {
               coins += 450;
+            }
+            if (currentItems.contains('Medical Records')) {
+              coins += 500; // Higher value for Level 4 items
+            }
+            if (currentItems.contains('Operating Room Setup')) {
+              coins += 600;
+            }
+            if (currentItems.contains('Specialized Medication Kit')) {
+              coins += 550;
             }
 
             return AnimatedContainer(
@@ -801,8 +856,10 @@ class _MainHomeScreenState extends State<MainHomeScreen>
                   requiredItems = levelOneRequiredItems;
                 } else if (currentLevel == 2) {
                   requiredItems = levelTwoRequiredItems;
-                } else {
+                } else if (currentLevel == 3) {
                   requiredItems = levelThreeRequiredItems;
+                } else {
+                  requiredItems = levelFourRequiredItems;
                 }
                 int completedItems = requiredItems
                     .where((item) => currentItems.contains(item))
