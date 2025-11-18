@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/show_dialog.dart';
 import 'package:medi_path/widgets/text_widget.dart';
@@ -37,6 +38,12 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
   late Animation<double> _shakeAnimation;
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
+  late AnimationController _bounceController;
+  late Animation<double> _bounceAnimation;
+  late AnimationController _fadeController;
+  late Animation<double> _fadeAnimation;
+  late AnimationController _confettiController;
+  late Animation<double> _confettiAnimation;
 
   @override
   void initState() {
@@ -81,6 +88,45 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
       parent: _pulseController,
       curve: Curves.easeInOut,
     ));
+
+    _bounceController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+
+    _bounceAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _bounceController,
+      curve: Curves.elasticOut,
+    ));
+
+    _fadeController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeInOut,
+    ));
+
+    _confettiController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+
+    _confettiAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _confettiController,
+      curve: Curves.easeOut,
+    ));
   }
 
   void _shuffleNumbers() {
@@ -112,28 +158,39 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
   void _onNumberSelected(int index) {
     if (isGameFinished || !canFlip || shuffledNumbers[index] == -1) return;
 
+    HapticFeedback.lightImpact(); // Add haptic feedback
+
     setState(() {
       if (selectedNumber == null) {
         selectedNumber = shuffledNumbers[index];
         selectedIndex = index;
         _flipController.forward();
+        _bounceController.forward().then((_) => _bounceController.reset());
       } else {
         moves++;
         if (selectedNumber == shuffledNumbers[index] &&
             selectedIndex != index) {
           // Match found
           matchedPairs++;
+          HapticFeedback.heavyImpact(); // Success haptic
+
           // Mark matched cards as empty (-1)
           shuffledNumbers[selectedIndex] = -1;
           shuffledNumbers[index] = -1;
 
+          _fadeController.forward();
+
           if (matchedPairs == numbers.length) {
             _stopTimer();
             isGameFinished = true;
-            _showGameFinishedDialog();
+            _confettiController.forward();
+            Future.delayed(const Duration(milliseconds: 500), () {
+              _showGameFinishedDialog();
+            });
           }
         } else {
-          // No match - shake animation
+          // No match - enhanced shake animation
+          HapticFeedback.mediumImpact(); // Error haptic
           canFlip = false;
           _shakeController.forward().then((_) {
             _shakeController.reset();
@@ -353,6 +410,9 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
     _flipController.dispose();
     _shakeController.dispose();
     _pulseController.dispose();
+    _bounceController.dispose();
+    _fadeController.dispose();
+    _confettiController.dispose();
     _stopTimer();
     super.dispose();
   }
@@ -360,45 +420,82 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:
+          const Color(0xFFF0F8FF), // Light medical theme background
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.transparent,
-        child: Badge(
-          backgroundColor: Colors.red,
-          label: TextWidget(
-            text: 'Task',
-            fontSize: 12,
-            color: Colors.white,
+        elevation: 8,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF2E86AB), Color(0xFF3498DB)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF2E86AB).withOpacity(0.4),
+                blurRadius: 15,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
-          child: Image.asset(
-            'assets/images/Task sample.PNG',
-            height: 50,
+          child: Badge(
+            backgroundColor: Colors.red,
+            label: TextWidget(
+              text: 'Task',
+              fontSize: 12,
+              color: Colors.white,
+            ),
+            child: Image.asset(
+              'assets/images/Task sample.PNG',
+              height: 50,
+            ),
           ),
         ),
         onPressed: () {
+          HapticFeedback.lightImpact();
           showTaskDialog();
         },
       ),
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF2E86AB),
+        elevation: 0,
         title: TextWidget(
           text:
               'Find matching pairs of numbers. Tap on two cards to see if they match!',
           fontSize: 14,
           fontFamily: 'Bold',
+          color: Colors.white,
         ),
         actions: [
-          // Game stats
+          // Enhanced game stats
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: primary,
-                borderRadius: BorderRadius.circular(20),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF3498DB), Color(0xFF2E86AB)],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.timer, color: Colors.white, size: 16),
-                  const SizedBox(width: 4),
+                  const Icon(Icons.timer, color: Colors.white, size: 18),
+                  const SizedBox(width: 6),
                   Text(
                     _formatTime(timeElapsed),
                     style: const TextStyle(
@@ -407,9 +504,9 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  const Icon(Icons.swap_horiz, color: Colors.white, size: 16),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 16),
+                  const Icon(Icons.swap_horiz, color: Colors.white, size: 18),
+                  const SizedBox(width: 6),
                   Text(
                     '$moves',
                     style: const TextStyle(
@@ -424,117 +521,260 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
           ),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-          // Game grid
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 6,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 15,
-                childAspectRatio: 1.0,
-              ),
-              itemCount: shuffledNumbers.length,
-              itemBuilder: (context, index) {
-                bool isSelected = index == selectedIndex;
-                bool isEmpty = shuffledNumbers[index] == -1;
-
-                if (isEmpty) {
-                  // Empty slot for matched pair
-                  return Container(
+          // Confetti effect overlay
+          if (isGameFinished)
+            AnimatedBuilder(
+              animation: _confettiAnimation,
+              builder: (context, child) {
+                return Opacity(
+                  opacity: _confettiAnimation.value,
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
                     decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
+                      gradient: RadialGradient(
+                        colors: [
+                          Colors.transparent,
+                          Colors.white.withOpacity(0.1),
+                          Colors.white.withOpacity(0.2),
+                        ],
+                        stops: const [0.0, 0.5, 1.0],
+                      ),
                     ),
-                  );
-                }
-
-                return GestureDetector(
-                  onTap: () => _onNumberSelected(index),
-                  child: AnimatedBuilder(
-                    animation:
-                        Listenable.merge([_flipAnimation, _shakeAnimation]),
-                    builder: (context, child) {
-                      return Transform(
-                        transform: Matrix4.identity()
-                          ..setEntry(3, 2, 0.001)
-                          ..translate(_shakeAnimation.value *
-                              (sin(_shakeAnimation.value * 20) * 5)),
-                        alignment: Alignment.center,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: isSelected
-                                ? const LinearGradient(
-                                    colors: [
-                                      Colors.blueAccent,
-                                      Colors.lightBlue
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  )
-                                : const LinearGradient(
-                                    colors: [Colors.blueGrey, Colors.grey],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 8,
-                                offset: const Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: _flipAnimation.value > 0.5
-                                ? Text(
-                                    '${shuffledNumbers[index]}',
-                                    style: const TextStyle(
-                                      fontSize: 32,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                : Icon(
-                                    Icons.help_outline,
-                                    size: 32,
-                                    color: Colors.white.withOpacity(0.8),
-                                  ),
-                          ),
-                        ),
-                      );
-                    },
                   ),
                 );
               },
             ),
-          ),
 
-          // Progress indicator
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Text(
-                  'Progress: $matchedPairs / ${numbers.length}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+          Column(
+            children: [
+              // Enhanced progress indicator at top
+              Container(
+                margin: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Colors.white, Color(0xFFF0F8FF)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Progress: $matchedPairs / ${numbers.length}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2E86AB),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF27AE60), Color(0xFF2ECC71)],
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            '${((matchedPairs / numbers.length) * 100).toInt()}%',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      height: 12,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: matchedPairs / numbers.length,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF27AE60), Color(0xFF2ECC71)],
+                            ),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Game grid
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: GridView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4, // Better layout for tablets
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1.0,
+                    ),
+                    itemCount: shuffledNumbers.length,
+                    itemBuilder: (context, index) {
+                      bool isSelected = index == selectedIndex;
+                      bool isEmpty = shuffledNumbers[index] == -1;
+
+                      if (isEmpty) {
+                        // Enhanced empty slot with fade animation
+                        return AnimatedBuilder(
+                          animation: _fadeAnimation,
+                          builder: (context, child) {
+                            return Opacity(
+                              opacity: _fadeAnimation.value,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xFF27AE60),
+                                      Color(0xFF2ECC71)
+                                    ],
+                                  ),
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF27AE60)
+                                          .withOpacity(0.3),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.check_circle,
+                                  color: Colors.white,
+                                  size: 40,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }
+
+                      return GestureDetector(
+                        onTap: () => _onNumberSelected(index),
+                        child: AnimatedBuilder(
+                          animation: Listenable.merge([
+                            _flipAnimation,
+                            _shakeAnimation,
+                            _pulseAnimation,
+                            _bounceAnimation
+                          ]),
+                          builder: (context, child) {
+                            return Transform(
+                              transform: Matrix4.identity()
+                                ..setEntry(3, 2, 0.001)
+                                ..translate(_shakeAnimation.value *
+                                    (sin(_shakeAnimation.value * 20) * 5)),
+                              alignment: Alignment.center,
+                              child: Transform.scale(
+                                scale: isSelected ? _pulseAnimation.value : 1.0,
+                                child: Transform.rotate(
+                                  angle: isSelected
+                                      ? _bounceAnimation.value * 0.1
+                                      : 0.0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      gradient: isSelected
+                                          ? const LinearGradient(
+                                              colors: [
+                                                Color(0xFF3498DB),
+                                                Color(0xFF2E86AB),
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            )
+                                          : LinearGradient(
+                                              colors: [
+                                                Colors.blueGrey.shade400,
+                                                Colors.blueGrey.shade600,
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 10,
+                                          offset: const Offset(3, 3),
+                                          spreadRadius: 1,
+                                        ),
+                                        if (isSelected)
+                                          BoxShadow(
+                                            color: const Color(0xFF3498DB)
+                                                .withOpacity(0.4),
+                                            blurRadius: 20,
+                                            spreadRadius: 2,
+                                          ),
+                                      ],
+                                    ),
+                                    child: Center(
+                                      child: _flipAnimation.value > 0.5
+                                          ? Text(
+                                              '${shuffledNumbers[index]}',
+                                              style: const TextStyle(
+                                                fontSize: 36,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                shadows: [
+                                                  Shadow(
+                                                    color: Colors.black26,
+                                                    offset: Offset(1, 1),
+                                                    blurRadius: 2,
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : Icon(
+                                              Icons.help_outline,
+                                              size: 36,
+                                              color:
+                                                  Colors.white.withOpacity(0.9),
+                                            ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
-                const SizedBox(height: 8),
-                LinearProgressIndicator(
-                  value: matchedPairs / numbers.length,
-                  backgroundColor: Colors.grey.shade300,
-                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
-                  minHeight: 10,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
