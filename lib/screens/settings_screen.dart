@@ -91,172 +91,168 @@ class _DrillsPageState extends State<SettingsScreen> {
                   child: Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(24),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                        child: Container(
-                          width: 720,
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            color: Colors.black.withValues(alpha: 0.04),
-                            border: Border.all(
-                              color: Colors.black.withValues(alpha: 0.1),
-                            ),
+                      child: Container(
+                        width: 720,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24),
+                          color: Colors.black.withValues(alpha: 0.04),
+                          border: Border.all(
+                            color: Colors.black.withValues(alpha: 0.1),
                           ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // Volume block
-                                _sectionHeader(
-                                  icon: Icons.volume_up,
-                                  title: 'Game Volume',
-                                ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Switch(
-                                      value: isMuted,
-                                      activeColor: Colors.amber,
-                                      onChanged: (v) async {
-                                        setState(() => isMuted = v);
-                                        if (v) {
-                                          _prevVolume =
-                                              val > 0.01 ? val : _prevVolume;
-                                          await FlutterVolumeController
-                                              .setVolume(0);
-                                          setState(() => val = 0);
-                                        } else {
-                                          await FlutterVolumeController
-                                              .setVolume(_prevVolume);
-                                          setState(() => val = _prevVolume);
-                                        }
-                                      },
-                                    ),
-                                    const SizedBox(width: 8),
-                                    TextWidget(
-                                      text: 'Mute',
-                                      fontSize: 16,
-                                      color: Colors.black87,
-                                    ),
-                                    const Spacer(),
-                                    _pill('${(val * 100).round()}%'),
-                                  ],
-                                ),
-                                SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: Colors.amber,
-                                    inactiveTrackColor: Colors.black12,
-                                    thumbColor: Colors.amber,
-                                    overlayColor:
-                                        Colors.amber.withValues(alpha: 0.2),
-                                  ),
-                                  child: Slider(
-                                    min: 0,
-                                    max: 1,
-                                    value: val,
-                                    onChanged: (value) async {
-                                      await FlutterVolumeController.setVolume(
-                                          value);
-                                      setState(() {
-                                        val = value;
-                                        isMuted = value <= 0.001;
-                                        if (!isMuted) _prevVolume = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(height: 24),
-
-                                // Brightness block
-                                _sectionHeader(
-                                  icon: Icons.brightness_6,
-                                  title: 'Screen Brightness',
-                                ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    const SizedBox(width: 8),
-                                    const Icon(Icons.wb_sunny,
-                                        color: Colors.black54),
-                                    const SizedBox(width: 8),
-                                    TextWidget(
-                                      text: 'Adjust brightness',
-                                      fontSize: 16,
-                                      color: Colors.black87,
-                                    ),
-                                    const Spacer(),
-                                    _pill('${(val2 * 100).round()}%'),
-                                  ],
-                                ),
-                                SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: Colors.lightBlueAccent,
-                                    inactiveTrackColor: Colors.black12,
-                                    thumbColor: Colors.lightBlueAccent,
-                                    overlayColor: Colors.lightBlueAccent
-                                        .withValues(alpha: 0.2),
-                                  ),
-                                  child: Slider(
-                                    min: 0,
-                                    max: 1,
-                                    value: val2,
-                                    onChanged: (value) async {
-                                      await setBrightness(value);
-                                      setState(() {
-                                        val2 = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-
-                                const SizedBox(height: 12),
-                                Row(
-                                  children: [
-                                    TextButton(
-                                      onPressed: () async {
-                                        // defaults
+                        ),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Volume block
+                              _sectionHeader(
+                                icon: Icons.volume_up,
+                                title: 'Game Volume',
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Switch(
+                                    value: isMuted,
+                                    activeColor: Colors.amber,
+                                    onChanged: (v) async {
+                                      setState(() => isMuted = v);
+                                      if (v) {
+                                        _prevVolume =
+                                            val > 0.01 ? val : _prevVolume;
                                         await FlutterVolumeController.setVolume(
-                                            0.5);
-                                        await setBrightness(0.7);
-                                        setState(() {
-                                          val = 0.5;
-                                          val2 = 0.7;
-                                          isMuted = false;
-                                          _prevVolume = 0.5;
-                                        });
-                                      },
-                                      child: TextWidget(
-                                        text: 'Reset to defaults',
-                                        fontSize: 14,
-                                        color: Colors.black54,
-                                      ),
+                                            0);
+                                        setState(() => val = 0);
+                                      } else {
+                                        await FlutterVolumeController.setVolume(
+                                            _prevVolume);
+                                        setState(() => val = _prevVolume);
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(width: 8),
+                                  TextWidget(
+                                    text: 'Mute',
+                                    fontSize: 16,
+                                    color: Colors.black87,
+                                  ),
+                                  const Spacer(),
+                                  _pill('${(val * 100).round()}%'),
+                                ],
+                              ),
+                              SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  activeTrackColor: Colors.amber,
+                                  inactiveTrackColor: Colors.black12,
+                                  thumbColor: Colors.amber,
+                                  overlayColor:
+                                      Colors.amber.withValues(alpha: 0.2),
+                                ),
+                                child: Slider(
+                                  min: 0,
+                                  max: 1,
+                                  value: val,
+                                  onChanged: (value) async {
+                                    await FlutterVolumeController.setVolume(
+                                        value);
+                                    setState(() {
+                                      val = value;
+                                      isMuted = value <= 0.001;
+                                      if (!isMuted) _prevVolume = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+
+                              // Brightness block
+                              _sectionHeader(
+                                icon: Icons.brightness_6,
+                                title: 'Screen Brightness',
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.wb_sunny,
+                                      color: Colors.black54),
+                                  const SizedBox(width: 8),
+                                  TextWidget(
+                                    text: 'Adjust brightness',
+                                    fontSize: 16,
+                                    color: Colors.black87,
+                                  ),
+                                  const Spacer(),
+                                  _pill('${(val2 * 100).round()}%'),
+                                ],
+                              ),
+                              SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  activeTrackColor: Colors.lightBlueAccent,
+                                  inactiveTrackColor: Colors.black12,
+                                  thumbColor: Colors.lightBlueAccent,
+                                  overlayColor: Colors.lightBlueAccent
+                                      .withValues(alpha: 0.2),
+                                ),
+                                child: Slider(
+                                  min: 0,
+                                  max: 1,
+                                  value: val2,
+                                  onChanged: (value) async {
+                                    await setBrightness(value);
+                                    setState(() {
+                                      val2 = value;
+                                    });
+                                  },
+                                ),
+                              ),
+
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  TextButton(
+                                    onPressed: () async {
+                                      // defaults
+                                      await FlutterVolumeController.setVolume(
+                                          0.5);
+                                      await setBrightness(0.7);
+                                      setState(() {
+                                        val = 0.5;
+                                        val2 = 0.7;
+                                        isMuted = false;
+                                        _prevVolume = 0.5;
+                                      });
+                                    },
+                                    child: TextWidget(
+                                      text: 'Reset to defaults',
+                                      fontSize: 14,
+                                      color: Colors.black54,
                                     ),
-                                    const Spacer(),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.amber,
-                                        foregroundColor: Colors.black,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 12),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        elevation: 0,
+                                  ),
+                                  const Spacer(),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.amber,
+                                      foregroundColor: Colors.black,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 12),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text(
-                                        'Back to game',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                      elevation: 0,
                                     ),
-                                  ],
-                                )
-                              ],
-                            ),
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text(
+                                      'Back to game',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                         ),
                       ),
