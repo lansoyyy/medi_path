@@ -5,6 +5,7 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
 import 'package:medi_path/screens/game_screens/number.dart';
+import 'package:medi_path/screens/game_screens/hangman.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
 import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/show_dialog.dart';
@@ -537,14 +538,17 @@ class Fridge extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final random = math.Random();
-        int value = random.nextInt(2);
+        int value = random.nextInt(3);
 
         if (value == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => const ColorMatchingGame(item: 'Food')));
-        } else {
+        } else if (value == 1) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => NumberMatchingGame(item: 'Food')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HangmanGame(item: 'Food')));
         }
       },
       child: Container(
@@ -588,15 +592,18 @@ class SurgicalKit extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final random = math.Random();
-        int value = random.nextInt(2);
+        int value = random.nextInt(3);
 
         if (value == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   const ColorMatchingGame(item: 'Surgical Kit')));
-        } else {
+        } else if (value == 1) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => NumberMatchingGame(item: 'Surgical Kit')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HangmanGame(item: 'Surgical Kit')));
         }
       },
       child: Container(
@@ -639,16 +646,19 @@ class EmergencyInjection extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final random = math.Random();
-        int value = random.nextInt(2);
+        int value = random.nextInt(3);
 
         if (value == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   const ColorMatchingGame(item: 'Emergency Injection')));
-        } else {
+        } else if (value == 1) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   NumberMatchingGame(item: 'Emergency Injection')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HangmanGame(item: 'Emergency Injection')));
         }
       },
       child: Container(
@@ -691,14 +701,17 @@ class Pillow extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final random = math.Random();
-        int value = random.nextInt(2);
+        int value = random.nextInt(3);
 
         if (value == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => const ColorMatchingGame(item: 'Pillow')));
-        } else {
+        } else if (value == 1) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => NumberMatchingGame(item: 'Pillow')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HangmanGame(item: 'Pillow')));
         }
       },
       child: Container(
@@ -741,16 +754,19 @@ class OperatingRoomSetup extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final random = math.Random();
-        int value = random.nextInt(2);
+        int value = random.nextInt(3);
 
         if (value == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   const ColorMatchingGame(item: 'Operating Room Setup')));
-        } else {
+        } else if (value == 1) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   NumberMatchingGame(item: 'Operating Room Setup')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HangmanGame(item: 'Operating Room Setup')));
         }
       },
       child: Container(

@@ -5,6 +5,7 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
 import 'package:medi_path/screens/game_screens/number.dart';
+import 'package:medi_path/screens/game_screens/hangman.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
 import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/text_widget.dart';
@@ -505,14 +506,17 @@ class XRay extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final random = math.Random();
-        int value = random.nextInt(2);
+        int value = random.nextInt(3);
 
         if (value == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => const ColorMatchingGame(item: 'X-Ray')));
-        } else {
+        } else if (value == 1) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => NumberMatchingGame(item: 'X-Ray')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HangmanGame(item: 'X-Ray')));
         }
       },
       child: Container(
@@ -562,16 +566,20 @@ class _BloodTestState extends State<BloodTest> {
       body: GestureDetector(
         onTap: () {
           final random = math.Random();
-          int value = random.nextInt(2);
+          int value = random.nextInt(3);
 
           if (value == 0) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     const ColorMatchingGame(item: 'Vital Signs Equipment')));
-          } else {
+          } else if (value == 1) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     NumberMatchingGame(item: 'Vital Signs Equipment')));
+          } else {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    HangmanGame(item: 'Vital Signs Equipment')));
           }
         },
         child: Container(
@@ -615,16 +623,19 @@ class PatientMonitor extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final random = math.Random();
-        int value = random.nextInt(2);
+        int value = random.nextInt(3);
 
         if (value == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   const ColorMatchingGame(item: 'Patient Monitor')));
-        } else {
+        } else if (value == 1) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   NumberMatchingGame(item: 'Patient Monitor')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HangmanGame(item: 'Patient Monitor')));
         }
       },
       child: Container(
@@ -667,16 +678,20 @@ class SpecializedMedicationKit extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final random = math.Random();
-        int value = random.nextInt(2);
+        int value = random.nextInt(3);
 
         if (value == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   const ColorMatchingGame(item: 'Specialized Medication Kit')));
-        } else {
+        } else if (value == 1) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   NumberMatchingGame(item: 'Specialized Medication Kit')));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  HangmanGame(item: 'Specialized Medication Kit')));
         }
       },
       child: Container(
