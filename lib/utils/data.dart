@@ -221,6 +221,169 @@ List<String> levelFourRequiredItems = [
   'Specialized Medication Kit'
 ];
 
+List<Map<String, String>> medicalNotebookEntries = [
+  {
+    'id': 'Pillow',
+    'title': 'Pillow',
+    'category': 'Nurse Room',
+    'description':
+        'Used to support the patient and keep them comfortable in bed.'
+  },
+  {
+    'id': 'Food',
+    'title': 'Patient Meal',
+    'category': 'Nurse Room',
+    'description': 'Provides nutrition and energy to help the patient recover.'
+  },
+  {
+    'id': 'Medicine Prescriptions',
+    'title': 'Medicine Prescriptions',
+    'category': 'Doctor Room',
+    'description':
+        'Lists the medicines, doses, and schedules ordered by the doctor.'
+  },
+  {
+    'id': 'Vital Signs Equipment',
+    'title': 'Vital Signs Equipment',
+    'category': 'Medtech Room',
+    'description':
+        'Tools used to measure blood pressure, heart rate, and temperature.'
+  },
+  {
+    'id': 'Prescribed Medicine (2)',
+    'title': 'Prescribed Medicine',
+    'category': 'Pharmacy Room',
+    'description': 'Medicines prepared by the pharmacy according to the order.'
+  },
+  {
+    'id': 'X-Ray',
+    'title': 'X-Ray Image',
+    'category': 'Medtech Room',
+    'description':
+        'A special picture that shows bones and some organs inside the body.'
+  },
+  {
+    'id': 'Oximeter',
+    'title': 'Pulse Oximeter',
+    'category': 'Patients Room',
+    'description':
+        'A small device placed on a finger to measure oxygen level and pulse.'
+  },
+  {
+    'id': 'Surgical Kit',
+    'title': 'Surgical Kit',
+    'category': 'Nurse Room',
+    'description':
+        'A set of sterile instruments used by the surgical team during operations.'
+  },
+  {
+    'id': 'Emergency Injection',
+    'title': 'Emergency Injection',
+    'category': 'Pharmacy Room',
+    'description':
+        'A fast-acting medicine given by injection during urgent situations.'
+  },
+  {
+    'id': 'Patient Monitor',
+    'title': 'Patient Monitor',
+    'category': 'Nurse Room',
+    'description':
+        'A screen that continuously shows vital signs like heart rate and oxygen.'
+  },
+  {
+    'id': 'Operating Room Setup',
+    'title': 'Operating Room Setup',
+    'category': 'Nurse Room',
+    'description':
+        'The preparation of tools, machines, and sterile area before surgery.'
+  },
+  {
+    'id': 'Specialized Medication Kit',
+    'title': 'Specialized Medication Kit',
+    'category': 'Pharmacy Room',
+    'description':
+        'A collection of special medicines prepared for a specific procedure.'
+  },
+  {
+    'id': 'Medical Records',
+    'title': 'Medical Records',
+    'category': 'Reception',
+    'description':
+        'Documents that contain the patient history, diagnoses, and treatments.'
+  },
+  {
+    'id': 'nurse',
+    'title': 'Nurse',
+    'category': 'Medical Staff',
+    'description':
+        'A healthcare professional who closely cares for patients every day.'
+  },
+  {
+    'id': 'doctor',
+    'title': 'Doctor',
+    'category': 'Medical Staff',
+    'description':
+        'A medical professional who examines patients and plans treatments.'
+  },
+  {
+    'id': 'virus',
+    'title': 'Virus',
+    'category': 'Disease',
+    'description':
+        'A tiny germ that can enter the body and cause infectious illnesses.'
+  },
+  {
+    'id': 'oxygen',
+    'title': 'Oxygen',
+    'category': 'Breathing Support',
+    'description':
+        'A gas that every cell in the body needs to stay alive and healthy.'
+  },
+  {
+    'id': 'pharmacy',
+    'title': 'Pharmacy',
+    'category': 'Hospital Area',
+    'description':
+        'The area where medicines are prepared, checked, and given to patients.'
+  },
+  {
+    'id': 'surgery',
+    'title': 'Surgery',
+    'category': 'Procedure',
+    'description':
+        'A medical operation where doctors work inside the body to fix a problem.'
+  },
+  {
+    'id': 'vitals',
+    'title': 'Vital Signs',
+    'category': 'Monitoring',
+    'description':
+        'Important measurements such as heart rate, temperature, and breathing.'
+  },
+  {
+    'id': 'tablet',
+    'title': 'Tablet Medicine',
+    'category': 'Medication Form',
+    'description':
+        'A small solid dose of medicine that is swallowed with water.'
+  },
+  {
+    'id': 'capsule',
+    'title': 'Capsule Medicine',
+    'category': 'Medication Form',
+    'description':
+        'Medicine inside a small shell that dissolves inside the stomach.'
+  },
+];
+
+List<String> unlockedNotebookIds = [];
+
+void unlockNotebookItem(String id) {
+  if (!unlockedNotebookIds.contains(id)) {
+    unlockedNotebookIds.add(id);
+  }
+}
+
 List currentItems = [];
 
 int currentLevel = 1;

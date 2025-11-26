@@ -430,6 +430,8 @@ class _HangmanGameState extends State<HangmanGame>
                                   Navigator.pop(context);
                                   setState(() {
                                     currentItems.add(widget.item);
+                                    unlockNotebookItem(widget.item);
+                                    unlockNotebookItem(_word.toLowerCase());
                                   });
                                   showToast(
                                       '${widget.item} has been added to the bag!');

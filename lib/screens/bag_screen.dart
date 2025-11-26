@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/text_widget.dart';
+import 'package:medi_path/screens/medical_notebook_screen.dart';
 
 class BagScreen extends StatefulWidget {
   const BagScreen({super.key});
@@ -173,6 +174,60 @@ class _BagScreenState extends State<BagScreen> with TickerProviderStateMixin {
                   ),
                 ),
               ],
+            ),
+          ),
+
+          // Notebook button
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF8E44AD), Color(0xFF9B59B6)],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF8E44AD).withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(20),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(20),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MedicalNotebookScreen(),
+                    ),
+                  );
+                },
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.menu_book,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        'Notebook',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
 

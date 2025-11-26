@@ -336,6 +336,7 @@ class _ColorMatchingGameState extends State<ColorMatchingGame>
                             Navigator.pop(context);
                             setState(() {
                               currentItems.add(widget.item);
+                              unlockNotebookItem(widget.item);
                               _shuffleMedicines();
                               _startTimer();
                             });

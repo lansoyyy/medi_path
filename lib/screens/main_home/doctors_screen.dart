@@ -5,10 +5,10 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:medi_path/screens/game_screens/color.dart';
 import 'package:medi_path/screens/game_screens/number.dart';
+import 'package:medi_path/screens/game_screens/hangman.dart';
 import 'package:medi_path/screens/main_home_screen.dart';
 import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/text_widget.dart';
-import 'package:medi_path/widgets/toast_widget.dart';
 
 class DoctorScreen extends StatefulWidget {
   const DoctorScreen({super.key});
@@ -418,44 +418,9 @@ class _DoctorScreenState extends State<DoctorScreen> {
             left: 510,
             child: GestureDetector(
               onTap: () {
-                Get.dialog(
-                  barrierDismissible: true,
-                  Container(
-                    height: 400,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.fitHeight,
-                        image: AssetImage(
-                          'assets/images/Prescribed medicine.PNG',
-                        ),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20, right: 50),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.red, shape: BoxShape.circle),
-                          child: IconButton(
-                            onPressed: () {
-                              Get.back();
-                              setState(() {
-                                currentItems.add('Medicine Prescriptions');
-                              });
-                              showToast(
-                                  'Medicine Prescriptions is added to bag!');
-                            },
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 50,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                Get.to(
+                  () => const MedicinePrescriptionsItem(),
+                  transition: Transition.circularReveal,
                 );
               },
               child: Container(
@@ -480,60 +445,77 @@ class _DoctorScreenState extends State<DoctorScreen> {
               ),
             ),
           ),
-          // Level 4 Medical Records item
-          if (currentLevel == 4)
-            Positioned(
-              bottom: 100,
-              left: 200,
-              child: GestureDetector(
-                onTap: () {
-                  Get.dialog(
-                    barrierDismissible: true,
-                    Container(
-                      height: 400,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fitHeight,
-                          image: AssetImage(
-                            'assets/images/file1.png',
-                          ),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 20, right: 50),
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                color: Colors.red, shape: BoxShape.circle),
-                            child: IconButton(
-                              onPressed: () {
-                                Get.back();
-                                setState(() {
-                                  currentItems.add('Medical Records');
-                                });
-                                showToast('Medical Records is added to bag!');
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                                color: Colors.white,
-                                size: 50,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
+        ],
+      ),
+    );
+  }
+}
+
+class MedicinePrescriptionsItem extends StatelessWidget {
+  const MedicinePrescriptionsItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        final random = math.Random();
+        int value = random.nextInt(3);
+
+        if (value == 0) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  const ColorMatchingGame(item: 'Medicine Prescriptions'),
+            ),
+          );
+        } else if (value == 1) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  NumberMatchingGame(item: 'Medicine Prescriptions'),
+            ),
+          );
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => HangmanGame(item: 'Medicine Prescriptions'),
+            ),
+          );
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.fitHeight,
+            image: AssetImage(
+              'assets/images/Prescribed medicine.PNG',
+            ),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, right: 50),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
                 },
-                child: Container(
-                  width: 100,
-                  height: 80,
-                  color: Colors.transparent,
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 50,
                 ),
               ),
             ),
-        ],
+          ),
+        ),
       ),
     );
   }

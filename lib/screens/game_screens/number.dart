@@ -347,6 +347,7 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
                             Navigator.pop(context);
                             setState(() {
                               currentItems.add(widget.item);
+                              unlockNotebookItem(widget.item);
                               _shuffleNumbers();
                               _startTimer();
                             });
