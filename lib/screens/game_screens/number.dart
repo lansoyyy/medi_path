@@ -31,6 +31,11 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
   bool isGameFinished = false;
   bool canFlip = true;
 
+  // Track mismatch state for visual feedback
+  bool _showMismatch = false;
+  int _mismatchIndex1 = -1;
+  int _mismatchIndex2 = -1;
+
   // Animation controllers
   late AnimationController _flipController;
   late Animation<double> _flipAnimation;
@@ -189,9 +194,12 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
             });
           }
         } else {
-          // No match - enhanced shake animation
+          // No match - enhanced shake animation with visual feedback
           HapticFeedback.mediumImpact(); // Error haptic
           canFlip = false;
+          _mismatchIndex1 = selectedIndex;
+          _mismatchIndex2 = index;
+          _showMismatch = true;
           _shakeController.forward().then((_) {
             _shakeController.reset();
             // Reset selection after a short delay
@@ -201,6 +209,9 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
                   selectedNumber = null;
                   selectedIndex = -1;
                   canFlip = true;
+                  _showMismatch = false;
+                  _mismatchIndex1 = -1;
+                  _mismatchIndex2 = -1;
                 });
               }
             });
@@ -691,11 +702,20 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
                             _bounceAnimation
                           ]),
                           builder: (context, child) {
+                            // Highlight only the mismatched cards
+                            final bool isMismatch = _showMismatch &&
+                                (index == _mismatchIndex1 ||
+                                    index == _mismatchIndex2);
+
+                            final double shakeOffset = isMismatch
+                                ? _shakeAnimation.value *
+                                    (sin(_shakeAnimation.value * 20) * 5)
+                                : 0.0;
+
                             return Transform(
                               transform: Matrix4.identity()
                                 ..setEntry(3, 2, 0.001)
-                                ..translate(_shakeAnimation.value *
-                                    (sin(_shakeAnimation.value * 20) * 5)),
+                                ..translate(shakeOffset),
                               alignment: Alignment.center,
                               child: Transform.scale(
                                 scale: isSelected ? _pulseAnimation.value : 1.0,
@@ -705,32 +725,44 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
                                       : 0.0,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      gradient: isSelected
+                                      gradient: isMismatch
                                           ? const LinearGradient(
                                               colors: [
-                                                Color(0xFF3498DB),
-                                                Color(0xFF2E86AB),
+                                                Color(0xFFE74C3C),
+                                                Color(0xFFC0392B),
                                               ],
                                               begin: Alignment.topLeft,
                                               end: Alignment.bottomRight,
                                             )
-                                          : LinearGradient(
-                                              colors: [
-                                                Colors.blueGrey.shade400,
-                                                Colors.blueGrey.shade600,
-                                              ],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            ),
+                                          : isSelected
+                                              ? const LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF3498DB),
+                                                    Color(0xFF2E86AB),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                )
+                                              : LinearGradient(
+                                                  colors: [
+                                                    Colors.blueGrey.shade400,
+                                                    Colors.blueGrey.shade600,
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ),
                                       shape: BoxShape.circle,
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 10,
+                                          color: isMismatch
+                                              ? const Color(0xFFE74C3C)
+                                                  .withOpacity(0.5)
+                                              : Colors.black.withOpacity(0.2),
+                                          blurRadius: isMismatch ? 14 : 10,
                                           offset: const Offset(3, 3),
-                                          spreadRadius: 1,
+                                          spreadRadius: isMismatch ? 2 : 1,
                                         ),
-                                        if (isSelected)
+                                        if (isSelected && !isMismatch)
                                           BoxShadow(
                                             color: const Color(0xFF3498DB)
                                                 .withOpacity(0.4),

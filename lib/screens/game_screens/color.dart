@@ -56,6 +56,13 @@ class _ColorMatchingGameState extends State<ColorMatchingGame>
   late Animation<double> _fadeAnimation;
   late AnimationController _confettiController;
   late Animation<double> _confettiAnimation;
+  late AnimationController _shakeController;
+  late Animation<double> _shakeAnimation;
+
+  // Track mismatch state for visual feedback
+  bool _showMismatch = false;
+  int _mismatchIndex1 = -1;
+  int _mismatchIndex2 = -1;
 
   @override
   void initState() {
@@ -114,6 +121,19 @@ class _ColorMatchingGameState extends State<ColorMatchingGame>
     ).animate(CurvedAnimation(
       parent: _confettiController,
       curve: Curves.easeOut,
+    ));
+
+    _shakeController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+
+    _shakeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _shakeController,
+      curve: Curves.elasticOut,
     ));
   }
 
@@ -175,8 +195,21 @@ class _ColorMatchingGameState extends State<ColorMatchingGame>
             });
           }
         } else {
-          // No match
+          // No match - show shake animation
           HapticFeedback.mediumImpact(); // Error haptic
+          _mismatchIndex1 = selectedIndex;
+          _mismatchIndex2 = index;
+          _showMismatch = true;
+          _shakeController.forward().then((_) {
+            _shakeController.reset();
+            if (mounted) {
+              setState(() {
+                _showMismatch = false;
+                _mismatchIndex1 = -1;
+                _mismatchIndex2 = -1;
+              });
+            }
+          });
         }
         selectedMedicine = null;
         selectedIndex = -1;
@@ -379,6 +412,7 @@ class _ColorMatchingGameState extends State<ColorMatchingGame>
     _bounceController.dispose();
     _fadeController.dispose();
     _confettiController.dispose();
+    _shakeController.dispose();
     _stopTimer();
     super.dispose();
   }
@@ -638,65 +672,95 @@ class _ColorMatchingGameState extends State<ColorMatchingGame>
                         );
                       }
 
+                      // Check if this card is in mismatch state
+                      final bool isMismatch = _showMismatch &&
+                          (index == _mismatchIndex1 ||
+                              index == _mismatchIndex2);
+
                       return GestureDetector(
                         onTap: () => _onMedicineSelected(index),
                         child: AnimatedBuilder(
-                          animation: Listenable.merge(
-                              [_pulseAnimation, _bounceAnimation]),
+                          animation: Listenable.merge([
+                            _pulseAnimation,
+                            _bounceAnimation,
+                            _shakeAnimation
+                          ]),
                           builder: (context, child) {
-                            return Transform.scale(
-                              scale: isSelected ? _pulseAnimation.value : 1.0,
-                              child: Transform.rotate(
-                                angle: isSelected
-                                    ? _bounceAnimation.value * 0.1
-                                    : 0.0,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        medicineColors[
-                                                shuffledMedicines[index]]!
-                                            .withOpacity(0.9),
-                                        medicineColors[
-                                            shuffledMedicines[index]]!,
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        blurRadius: 8,
-                                        offset: const Offset(3, 3),
-                                        spreadRadius: 1,
+                            // Apply shake animation to mismatched cards
+                            double shakeOffset = 0;
+                            if (isMismatch) {
+                              shakeOffset = sin(_shakeAnimation.value * 15) *
+                                  5 *
+                                  (1 - _shakeAnimation.value);
+                            }
+
+                            return Transform.translate(
+                              offset: Offset(shakeOffset, 0),
+                              child: Transform.scale(
+                                scale: isSelected ? _pulseAnimation.value : 1.0,
+                                child: Transform.rotate(
+                                  angle: isSelected
+                                      ? _bounceAnimation.value * 0.1
+                                      : 0.0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                        colors: isMismatch
+                                            ? [
+                                                const Color(0xFFE74C3C),
+                                                const Color(0xFFC0392B)
+                                              ]
+                                            : [
+                                                medicineColors[
+                                                        shuffledMedicines[
+                                                            index]]!
+                                                    .withOpacity(0.9),
+                                                medicineColors[
+                                                    shuffledMedicines[index]]!,
+                                              ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
                                       ),
-                                      if (isSelected)
+                                      boxShadow: [
                                         BoxShadow(
-                                          color: medicineColors[
-                                                  shuffledMedicines[index]]!
-                                              .withOpacity(0.4),
-                                          blurRadius: 15,
-                                          spreadRadius: 2,
+                                          color: isMismatch
+                                              ? const Color(0xFFE74C3C)
+                                                  .withOpacity(0.5)
+                                              : Colors.black.withOpacity(0.2),
+                                          blurRadius: isMismatch ? 15 : 8,
+                                          offset: const Offset(3, 3),
+                                          spreadRadius: isMismatch ? 2 : 1,
                                         ),
-                                    ],
-                                    border: Border.all(
-                                      color: isSelected
-                                          ? Colors.white
-                                          : Colors.white.withOpacity(0.6),
-                                      width: isSelected ? 3 : 2,
+                                        if (isSelected && !isMismatch)
+                                          BoxShadow(
+                                            color: medicineColors[
+                                                    shuffledMedicines[index]]!
+                                                .withOpacity(0.4),
+                                            blurRadius: 15,
+                                            spreadRadius: 2,
+                                          ),
+                                      ],
+                                      border: Border.all(
+                                        color: isMismatch
+                                            ? Colors.red
+                                            : isSelected
+                                                ? Colors.white
+                                                : Colors.white.withOpacity(0.6),
+                                        width: isMismatch || isSelected ? 3 : 2,
+                                      ),
                                     ),
-                                  ),
-                                  child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Image.asset(
-                                        shuffledMedicines[index],
-                                        height: 80,
-                                        color: shuffledMedicines[index] ==
-                                                'assets/images/new/tablet_pink.png'
-                                            ? Colors.white
-                                            : null,
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Image.asset(
+                                          shuffledMedicines[index],
+                                          height: 80,
+                                          color: shuffledMedicines[index] ==
+                                                  'assets/images/new/tablet_pink.png'
+                                              ? Colors.white
+                                              : null,
+                                        ),
                                       ),
                                     ),
                                   ),
