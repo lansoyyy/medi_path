@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/show_dialog.dart';
-import 'package:medi_path/widgets/text_widget.dart';
 import 'package:medi_path/widgets/toast_widget.dart';
+import 'package:get/get.dart';
 
 class HangmanGame extends StatefulWidget {
   final String item;
@@ -38,8 +38,6 @@ class _HangmanGameState extends State<HangmanGame>
   late Animation<double> _bounceAnimation;
   late AnimationController _confettiController;
   late Animation<double> _confettiAnimation;
-  late AnimationController _heartController;
-  late Animation<double> _heartAnimation;
 
   // Track which letter was just revealed for animation
   Set<int> _revealedIndices = {};
@@ -127,15 +125,6 @@ class _HangmanGameState extends State<HangmanGame>
     _confettiAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _confettiController, curve: Curves.easeOut),
     );
-
-    // Heart animation for losing lives
-    _heartController = AnimationController(
-      duration: const Duration(milliseconds: 400),
-      vsync: this,
-    );
-    _heartAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(parent: _heartController, curve: Curves.easeInOut),
-    );
   }
 
   void _startTimer() {
@@ -164,7 +153,6 @@ class _HangmanGameState extends State<HangmanGame>
     _pulseController.dispose();
     _bounceController.dispose();
     _confettiController.dispose();
-    _heartController.dispose();
     _stopTimer();
     super.dispose();
   }
@@ -212,7 +200,6 @@ class _HangmanGameState extends State<HangmanGame>
         _wrongGuesses++;
         HapticFeedback.mediumImpact();
         _shakeController.forward().then((_) => _shakeController.reset());
-        _heartController.forward().then((_) => _heartController.reset());
       }
 
       if (_isWin) {
@@ -243,8 +230,6 @@ class _HangmanGameState extends State<HangmanGame>
   }
 
   void _showResultDialog(bool isWin) {
-    final int livesRemaining = _maxLives - _wrongGuesses;
-
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -258,8 +243,9 @@ class _HangmanGameState extends State<HangmanGame>
           },
           child: Dialog(
             backgroundColor: Colors.transparent,
+            insetPadding:
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             child: Container(
-              width: 340,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
                 gradient: LinearGradient(
@@ -288,198 +274,192 @@ class _HangmanGameState extends State<HangmanGame>
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(22),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Header
-                      Container(
-                        height: 90,
+                child: Row(
+                  // Split dialog content for landscape
+                  children: [
+                    // Result Visual Side
+                    Expanded(
+                      flex: 4,
+                      child: Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: isWin
                                 ? const [Color(0xFF2E86AB), Color(0xFF3498DB)]
                                 : const [Color(0xFFE74C3C), Color(0xFFC0392B)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           ),
                         ),
-                        child: Stack(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Decorative circles
-                            Positioned(
-                              top: -20,
-                              right: -20,
-                              child: Container(
-                                width: 80,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white.withOpacity(0.1),
-                                ),
+                            Text(
+                              isWin ? '🎉' : '💔',
+                              style: const TextStyle(fontSize: 60),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              isWin ? 'AWESOME!' : 'OH NO!',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.5,
                               ),
                             ),
-                            Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    isWin ? '🎉' : '💔',
-                                    style: const TextStyle(fontSize: 28),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    isWin ? 'WELL DONE!' : 'TRY AGAIN',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.5,
-                                    ),
-                                  ),
-                                ],
+                            const SizedBox(height: 8),
+                            Text(
+                              isWin ? 'You solved it!' : 'Try again?',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.9),
+                                fontSize: 16,
                               ),
                             ),
                           ],
                         ),
                       ),
+                    ),
 
-                      // Content
-                      Padding(
-                        padding: const EdgeInsets.all(20),
+                    // Stats & Action Side
+                    Expanded(
+                      flex: 6,
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Word reveal
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 10),
+                                  horizontal: 16, vertical: 12),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.08),
+                                    color: Colors.black.withOpacity(0.05),
                                     blurRadius: 8,
                                     offset: const Offset(0, 2),
                                   ),
                                 ],
                               ),
-                              child: Text(
-                                _word,
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: isWin
-                                      ? const Color(0xFF2E86AB)
-                                      : const Color(0xFFE74C3C),
-                                  letterSpacing: 4,
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(height: 12),
-
-                            Text(
-                              _hint,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Color(0xFF7F8C8D),
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-
-                            const SizedBox(height: 16),
-
-                            // Stats row
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: (isWin
-                                          ? const Color(0xFF2E86AB)
-                                          : Colors.red)
-                                      .withOpacity(0.3),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                              child: Column(
                                 children: [
-                                  _buildStatItem(
-                                      '⏱', _formatTime(_timeElapsed), 'Time'),
-                                  _buildStatItem('❤️',
-                                      '$livesRemaining/$_maxLives', 'Lives'),
-                                  _buildStatItem('📝',
-                                      '${_guessedLetters.length}', 'Guesses'),
-                                ],
-                              ),
-                            ),
-
-                            const SizedBox(height: 20),
-
-                            // Action button
-                            ElevatedButton(
-                              onPressed: () {
-                                HapticFeedback.lightImpact();
-                                if (isWin) {
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                  setState(() {
-                                    currentItems.add(widget.item);
-                                    unlockNotebookItem(widget.item);
-                                    unlockNotebookItem(_word.toLowerCase());
-                                  });
-                                  showToast(
-                                      '${widget.item} has been added to the bag!');
-                                } else {
-                                  Navigator.pop(context);
-                                  _startNewRound();
-                                  _startTimer();
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: isWin
-                                    ? const Color(0xFF2E86AB)
-                                    : const Color(0xFFE74C3C),
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                elevation: 6,
-                                shadowColor: (isWin
-                                        ? const Color(0xFF2E86AB)
-                                        : const Color(0xFFE74C3C))
-                                    .withOpacity(0.4),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    isWin ? Icons.check_circle : Icons.refresh,
-                                    size: 20,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    isWin ? 'Continue' : 'Play Again',
-                                    style: const TextStyle(
-                                      fontSize: 16,
+                                  const Text(
+                                    'THE WORD WAS',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    _word,
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      color: isWin
+                                          ? const Color(0xFF27AE60)
+                                          : const Color(0xFFE74C3C),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
+                            const SizedBox(height: 24),
+                            // Stats Row
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildStatItem(
+                                  Icons.timer,
+                                  _formatTime(_timeElapsed),
+                                  'Time',
+                                ),
+                                _buildStatItem(
+                                  Icons.error_outline,
+                                  '$_wrongGuesses',
+                                  'Mistakes',
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 24),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      Get.back(); // Go back to home
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey.shade200,
+                                      foregroundColor: Colors.grey.shade700,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    child: const Text('Exit'),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      HapticFeedback.lightImpact();
+                                      if (isWin) {
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                        setState(() {
+                                          currentItems.add(widget.item);
+                                          unlockNotebookItem(widget.item);
+                                          unlockNotebookItem(
+                                              _word.toLowerCase());
+                                        });
+                                        showToast(
+                                            '${widget.item} has been added to the bag!');
+                                      } else {
+                                        Navigator.pop(context);
+                                        _startNewRound();
+                                        _startTimer();
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: isWin
+                                          ? const Color(0xFF2E86AB)
+                                          : const Color(0xFFE74C3C),
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      elevation: 4,
+                                      shadowColor: (isWin
+                                              ? const Color(0xFF2E86AB)
+                                              : const Color(0xFFE74C3C))
+                                          .withOpacity(0.4),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      isWin ? 'Continue' : 'Play Again',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -489,24 +469,24 @@ class _HangmanGameState extends State<HangmanGame>
     );
   }
 
-  Widget _buildStatItem(String icon, String value, String label) {
+  Widget _buildStatItem(IconData icon, String value, String label) {
     return Column(
       children: [
-        Text(icon, style: const TextStyle(fontSize: 20)),
+        Icon(icon, color: const Color(0xFF2E86AB), size: 24),
         const SizedBox(height: 4),
         Text(
           value,
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Color(0xFF2C3E50),
           ),
         ),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 10,
-            color: Color(0xFF7F8C8D),
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.grey.shade600,
           ),
         ),
       ],
@@ -521,8 +501,8 @@ class _HangmanGameState extends State<HangmanGame>
       builder: (context, child) {
         return Wrap(
           alignment: WrapAlignment.center,
-          spacing: 10,
-          runSpacing: 10,
+          spacing: 8,
+          runSpacing: 8,
           children: List.generate(wordChars.length, (index) {
             final char = wordChars[index];
             final isLetter = RegExp(r'[A-Z]').hasMatch(char);
@@ -538,8 +518,8 @@ class _HangmanGameState extends State<HangmanGame>
             return Transform.scale(
               scale: scale,
               child: Container(
-                width: 38,
-                height: 48,
+                width: 32,
+                height: 42,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -569,7 +549,7 @@ class _HangmanGameState extends State<HangmanGame>
                 child: Text(
                   isLetter && isGuessed ? char : '_',
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: isGuessed ? Colors.white : const Color(0xFF2E86AB),
                   ),
@@ -598,10 +578,10 @@ class _HangmanGameState extends State<HangmanGame>
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             shrinkWrap: true,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 9,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: 1.3,
+              crossAxisCount: 10,
+              mainAxisSpacing: 6,
+              crossAxisSpacing: 6,
+              childAspectRatio: 1.0,
             ),
             itemCount: letters.length,
             itemBuilder: (context, index) {
@@ -680,292 +660,324 @@ class _HangmanGameState extends State<HangmanGame>
     );
   }
 
+  Widget _buildHearts() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(_maxLives, (index) {
+        final isLost = index < _wrongGuesses;
+        return AnimatedScale(
+          scale: isLost ? 0.8 : 1.0,
+          duration: const Duration(milliseconds: 300),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Icon(
+              isLost ? Icons.favorite_border : Icons.favorite,
+              color: isLost
+                  ? Colors.grey.withOpacity(0.5)
+                  : const Color(0xFFFF5F6D),
+              size: 32,
+            ),
+          ),
+        );
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F8FF),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.transparent,
-        elevation: 8,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFF2E86AB), Color(0xFF3498DB)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF2E86AB).withOpacity(0.4),
-                blurRadius: 15,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: Badge(
-            backgroundColor: Colors.red,
-            label: TextWidget(
-              text: 'Task',
-              fontSize: 12,
-              color: Colors.white,
-            ),
-            child: Image.asset(
-              'assets/images/Task sample.PNG',
-              height: 50,
-            ),
-          ),
-        ),
-        onPressed: () {
-          HapticFeedback.lightImpact();
-          showTaskDialog();
-        },
-      ),
-      appBar: AppBar(
-        foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFF2E86AB),
-        elevation: 0,
-        title: TextWidget(
-          text: 'Medical Word Challenge',
-          fontSize: 16,
-          fontFamily: 'Bold',
-          color: Colors.white,
-        ),
-        actions: [
-          // Timer and guesses display
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF3498DB), Color(0xFF2E86AB)],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.timer, color: Colors.white, size: 18),
-                  const SizedBox(width: 6),
-                  Text(
-                    _formatTime(_timeElapsed),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  const Icon(Icons.text_fields, color: Colors.white, size: 18),
-                  const SizedBox(width: 6),
-                  Text(
-                    '${_guessedLetters.length}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
       body: Stack(
         children: [
-          // Confetti overlay when game is won
-          if (_isGameFinished && _isWin)
-            AnimatedBuilder(
-              animation: _confettiAnimation,
-              builder: (context, child) {
-                return Opacity(
-                  opacity: _confettiAnimation.value,
-                  child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        colors: [
-                          Colors.transparent,
-                          const Color(0xFF27AE60).withOpacity(0.1),
-                          const Color(0xFF27AE60).withOpacity(0.2),
-                        ],
-                        stops: const [0.0, 0.5, 1.0],
-                      ),
-                    ),
-                  ),
-                );
-              },
+          // Background decoration
+          Positioned(
+            top: -50,
+            right: -50,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF3498DB).withOpacity(0.1),
+              ),
             ),
+          ),
+          Positioned(
+            bottom: -50,
+            left: -50,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF27AE60).withOpacity(0.1),
+              ),
+            ),
+          ),
 
           SafeArea(
-            child: Column(
+            child: Row(
               children: [
-                // Progress and info card
-                Container(
-                  margin: const EdgeInsets.all(16),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Colors.white, Color(0xFFF0F8FF)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Progress bar row
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Progress: ${(_progress * 100).toInt()}%',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF2E86AB),
-                            ),
-                          ),
-                          // Animated hearts
-                          AnimatedBuilder(
-                            animation: _heartAnimation,
-                            builder: (context, child) {
-                              return Row(
-                                children: List.generate(_maxLives, (index) {
-                                  final isLost =
-                                      index >= (_maxLives - _wrongGuesses);
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 2),
-                                    child: Transform.scale(
-                                      scale: isLost &&
-                                              index ==
-                                                  (_maxLives - _wrongGuesses)
-                                          ? 1.0 - (_heartAnimation.value * 0.3)
-                                          : 1.0,
-                                      child: Icon(
-                                        isLost
-                                            ? Icons.favorite_border
-                                            : Icons.favorite,
-                                        size: 20,
-                                        color: isLost
-                                            ? Colors.grey.shade400
-                                            : Colors.red,
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      // Animated progress bar
-                      Container(
-                        height: 10,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey.shade300,
-                        ),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            return Stack(
-                              children: [
-                                AnimatedContainer(
-                                  duration: const Duration(milliseconds: 300),
-                                  width: constraints.maxWidth * _progress,
-                                  decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      colors: [
-                                        Color(0xFF27AE60),
-                                        Color(0xFF2ECC71)
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      // Hint section
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFF9E6),
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: const Color(0xFFFFD54F),
-                            width: 1,
-                          ),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                // LEFT PANEL: Stats, Hint, Character/Theme
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Back Button & Header
+                        Row(
                           children: [
-                            const Icon(
-                              Icons.lightbulb,
-                              color: Color(0xFFFFB300),
-                              size: 18,
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: IconButton(
+                                icon: const Icon(Icons.arrow_back_rounded),
+                                color: const Color(0xFF2E86AB),
+                                onPressed: () => Navigator.pop(context),
+                              ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 16),
                             Expanded(
-                              child: Text(
-                                _hint,
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: Color(0xFF5D4037),
-                                  height: 1.3,
-                                ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Medi-Word',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w900,
+                                      color: Color(0xFF2E86AB),
+                                    ),
+                                  ),
+                                  Text(
+                                    'Level 1',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey.shade500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Task Button
+                            Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF3498DB),
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF3498DB)
+                                        .withOpacity(0.4),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: IconButton(
+                                icon: const Icon(Icons.assignment_outlined),
+                                color: Colors.white,
+                                tooltip: 'View Task',
+                                onPressed: () {
+                                  HapticFeedback.lightImpact();
+                                  showTaskDialog();
+                                },
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+
+                        const Spacer(),
+
+                        // Hint Card
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF2E86AB), Color(0xFF3498DB)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(24),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF2E86AB).withOpacity(0.3),
+                                blurRadius: 12,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: const Icon(Icons.lightbulb,
+                                        color: Colors.yellow, size: 24),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  const Text(
+                                    'HINT',
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                _hint,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  height: 1.4,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const Spacer(),
+
+                        // Bottom Stats Panel
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.grey.shade200),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.timer_outlined,
+                                          color: Colors.grey),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        _formatTime(_timeElapsed),
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF2C3E50),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFE8F6F3),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      '${(_progress * 100).toInt()}% Done',
+                                      style: const TextStyle(
+                                        color: Color(0xFF27AE60),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Divider(height: 24),
+                              _buildHearts(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
-                // Word display
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: _buildWordDisplay(),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Keyboard
+                // RIGHT PANEL: Game Board
                 Expanded(
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: _buildKeyboard(),
+                  flex: 6,
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(0, 20, 20, 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(32),
+                      border: Border.all(color: Colors.white),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Spacer(flex: 2),
+                        // Word Display
+                        _buildWordDisplay(),
+                        const Spacer(flex: 3),
+                        // Keyboard
+                        _buildKeyboard(),
+                        const Spacer(flex: 1),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
+
+          // Confetti overlay
+          if (_isGameFinished && _isWin)
+            IgnorePointer(
+              child: AnimatedBuilder(
+                animation: _confettiAnimation,
+                builder: (context, child) {
+                  return Opacity(
+                    opacity: _confettiAnimation.value,
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: RadialGradient(
+                          colors: [
+                            Colors.transparent,
+                            const Color(0xFF27AE60).withOpacity(0.1),
+                            const Color(0xFF27AE60).withOpacity(0.2),
+                          ],
+                          stops: const [0.0, 0.5, 1.0],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
         ],
       ),
     );
