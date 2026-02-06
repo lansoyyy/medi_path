@@ -755,161 +755,167 @@ class _ColorMatchingGameState extends State<ColorMatchingGame>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Spacer(flex: 1),
-                        // Game Grid
+                        // Game Grid - Using Wrap to eliminate scrolling
                         Expanded(
                           flex: 8,
-                          child: GridView.builder(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              crossAxisSpacing: 8,
-                              mainAxisSpacing: 8,
-                              childAspectRatio: 1.0,
-                            ),
-                            itemCount: shuffledMedicines.length,
-                            itemBuilder: (context, index) {
-                              bool isSelected = index == selectedIndex;
-                              bool isEmpty = shuffledMedicines[index] == '';
+                          child: SingleChildScrollView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            child: Wrap(
+                              spacing: 12,
+                              runSpacing: 12,
+                              alignment: WrapAlignment.center,
+                              children: List.generate(shuffledMedicines.length,
+                                  (index) {
+                                bool isSelected = index == selectedIndex;
+                                bool isEmpty = shuffledMedicines[index] == '';
 
-                              if (isEmpty) {
-                                return AnimatedBuilder(
-                                  animation: _fadeAnimation,
-                                  builder: (context, child) {
-                                    return Opacity(
-                                      opacity: _fadeAnimation.value,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.green.withOpacity(0.2),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          border: Border.all(
-                                            color: const Color(0xFF27AE60),
-                                            width: 2,
+                                if (isEmpty) {
+                                  return AnimatedBuilder(
+                                    animation: _fadeAnimation,
+                                    builder: (context, child) {
+                                      return Opacity(
+                                        opacity: _fadeAnimation.value,
+                                        child: Container(
+                                          width: 70,
+                                          height: 70,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Colors.green.withOpacity(0.2),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            border: Border.all(
+                                              color: const Color(0xFF27AE60),
+                                              width: 2,
+                                            ),
+                                          ),
+                                          child: const Icon(
+                                            Icons.check_circle,
+                                            color: Color(0xFF27AE60),
+                                            size: 32,
                                           ),
                                         ),
-                                        child: const Icon(
-                                          Icons.check_circle,
-                                          color: Color(0xFF27AE60),
-                                          size: 40,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              }
+                                      );
+                                    },
+                                  );
+                                }
 
-                              final bool isMismatch = _showMismatch &&
-                                  (index == _mismatchIndex1 ||
-                                      index == _mismatchIndex2);
+                                final bool isMismatch = _showMismatch &&
+                                    (index == _mismatchIndex1 ||
+                                        index == _mismatchIndex2);
 
-                              return GestureDetector(
-                                onTap: () => _onMedicineSelected(index),
-                                child: AnimatedBuilder(
-                                  animation: Listenable.merge([
-                                    _pulseAnimation,
-                                    _bounceAnimation,
-                                    _shakeAnimation
-                                  ]),
-                                  builder: (context, child) {
-                                    // Apply shake animation to mismatched cards
-                                    double shakeOffset = 0;
-                                    if (isMismatch) {
-                                      shakeOffset =
-                                          sin(_shakeAnimation.value * 15) *
-                                              5 *
-                                              (1 - _shakeAnimation.value);
-                                    }
+                                return GestureDetector(
+                                  onTap: () => _onMedicineSelected(index),
+                                  child: AnimatedBuilder(
+                                    animation: Listenable.merge([
+                                      _pulseAnimation,
+                                      _bounceAnimation,
+                                      _shakeAnimation
+                                    ]),
+                                    builder: (context, child) {
+                                      double shakeOffset = 0;
+                                      if (isMismatch) {
+                                        shakeOffset =
+                                            sin(_shakeAnimation.value * 15) *
+                                                5 *
+                                                (1 - _shakeAnimation.value);
+                                      }
 
-                                    return Transform.translate(
-                                      offset: Offset(shakeOffset, 0),
-                                      child: Transform.scale(
-                                        scale: isSelected
-                                            ? _pulseAnimation.value
-                                            : 1.0,
-                                        child: Transform.rotate(
-                                          angle: isSelected
-                                              ? _bounceAnimation.value * 0.1
-                                              : 0.0,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              gradient: LinearGradient(
-                                                colors: isMismatch
-                                                    ? [
-                                                        const Color(0xFFE74C3C),
-                                                        const Color(0xFFC0392B)
-                                                      ]
-                                                    : [
-                                                        medicineColors[
-                                                                shuffledMedicines[
-                                                                    index]]!
-                                                            .withOpacity(0.9),
-                                                        medicineColors[
-                                                            shuffledMedicines[
-                                                                index]]!,
-                                                      ],
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                              ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: isMismatch
-                                                      ? const Color(0xFFE74C3C)
-                                                          .withOpacity(0.5)
-                                                      : Colors.black
-                                                          .withOpacity(0.2),
-                                                  blurRadius:
-                                                      isMismatch ? 15 : 8,
-                                                  offset: const Offset(3, 3),
-                                                  spreadRadius:
-                                                      isMismatch ? 2 : 1,
+                                      return Transform.translate(
+                                        offset: Offset(shakeOffset, 0),
+                                        child: Transform.scale(
+                                          scale: isSelected
+                                              ? _pulseAnimation.value
+                                              : 1.0,
+                                          child: Transform.rotate(
+                                            angle: isSelected
+                                                ? _bounceAnimation.value * 0.1
+                                                : 0.0,
+                                            child: Container(
+                                              width: 70,
+                                              height: 70,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                gradient: LinearGradient(
+                                                  colors: isMismatch
+                                                      ? [
+                                                          const Color(
+                                                              0xFFE74C3C),
+                                                          const Color(
+                                                              0xFFC0392B)
+                                                        ]
+                                                      : [
+                                                          medicineColors[
+                                                                  shuffledMedicines[
+                                                                      index]]!
+                                                              .withOpacity(0.9),
+                                                          medicineColors[
+                                                              shuffledMedicines[
+                                                                  index]]!,
+                                                        ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
                                                 ),
-                                                if (isSelected && !isMismatch)
+                                                boxShadow: [
                                                   BoxShadow(
-                                                    color: medicineColors[
-                                                            shuffledMedicines[
-                                                                index]]!
-                                                        .withOpacity(0.4),
-                                                    blurRadius: 15,
-                                                    spreadRadius: 2,
+                                                    color: isMismatch
+                                                        ? const Color(
+                                                                0xFFE74C3C)
+                                                            .withOpacity(0.5)
+                                                        : Colors.black
+                                                            .withOpacity(0.2),
+                                                    blurRadius:
+                                                        isMismatch ? 15 : 8,
+                                                    offset: const Offset(0, 4),
+                                                    spreadRadius:
+                                                        isMismatch ? 2 : 1,
                                                   ),
-                                              ],
-                                              border: Border.all(
-                                                color: isMismatch
-                                                    ? Colors.red
-                                                    : isSelected
-                                                        ? Colors.white
-                                                        : Colors.white
-                                                            .withOpacity(0.6),
-                                                width: isMismatch || isSelected
-                                                    ? 3
-                                                    : 2,
+                                                  if (isSelected && !isMismatch)
+                                                    BoxShadow(
+                                                      color: medicineColors[
+                                                              shuffledMedicines[
+                                                                  index]]!
+                                                          .withOpacity(0.4),
+                                                      blurRadius: 20,
+                                                      spreadRadius: 3,
+                                                    ),
+                                                ],
+                                                border: Border.all(
+                                                  color: isMismatch
+                                                      ? Colors.red
+                                                      : isSelected
+                                                          ? Colors.white
+                                                          : Colors.white
+                                                              .withOpacity(0.6),
+                                                  width:
+                                                      isMismatch || isSelected
+                                                          ? 3
+                                                          : 2,
+                                                ),
                                               ),
-                                            ),
-                                            child: Center(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: Image.asset(
-                                                  shuffledMedicines[index],
-                                                  height: 80,
-                                                  color: shuffledMedicines[
-                                                              index] ==
-                                                          'assets/images/new/tablet_pink.png'
-                                                      ? Colors.white
-                                                      : null,
+                                              child: Center(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Image.asset(
+                                                    shuffledMedicines[index],
+                                                    height: 50,
+                                                    color: shuffledMedicines[
+                                                                index] ==
+                                                            'assets/images/new/tablet_pink.png'
+                                                        ? Colors.white
+                                                        : null,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
-                            },
+                                      );
+                                    },
+                                  ),
+                                );
+                              }),
+                            ),
                           ),
                         ),
                         const Spacer(flex: 1),

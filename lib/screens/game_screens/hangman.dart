@@ -42,44 +42,113 @@ class _HangmanGameState extends State<HangmanGame>
   // Track which letter was just revealed for animation
   Set<int> _revealedIndices = {};
 
+  // Word and hint variables
+  late String _word;
+  late String _hint;
+
   final List<Map<String, String>> _wordBank = [
+    // Level 1 - Easy (3-4 letters)
     {
       'word': 'nurse',
-      'hint': 'A healthcare professional who takes care of patients.'
+      'hint': 'A healthcare professional who takes care of patients.',
+      'level': '1'
     },
     {
+      'word': 'pill',
+      'hint': 'A small round form of medicine that you swallow.',
+      'level': '1'
+    },
+    {
+      'word': 'care',
+      'hint': 'Attention given to keep someone healthy and safe.',
+      'level': '1'
+    },
+    {
+      'word': 'heal',
+      'hint': 'To become healthy again after being sick or injured.',
+      'level': '1'
+    },
+    // Level 2 - Medium (5-6 letters)
+    {
       'word': 'doctor',
-      'hint': 'A medical professional who diagnoses and treats illnesses.'
+      'hint': 'A medical professional who diagnoses and treats illnesses.',
+      'level': '2'
     },
     {
       'word': 'virus',
-      'hint': 'A tiny organism that can cause infectious diseases.'
-    },
-    {
-      'word': 'oxygen',
-      'hint': 'The gas in the air that our body needs to breathe.'
-    },
-    {
-      'word': 'pharmacy',
-      'hint': 'The place where medicines are prepared and given to patients.'
-    },
-    {
-      'word': 'surgery',
-      'hint': 'A medical procedure where doctors operate on the body.'
-    },
-    {
-      'word': 'vitals',
-      'hint': 'Important body measurements like heart rate and temperature.'
+      'hint': 'A tiny organism that can cause infectious diseases.',
+      'level': '2'
     },
     {
       'word': 'tablet',
-      'hint': 'A small solid form of medicine that you swallow.'
+      'hint': 'A small solid form of medicine that you swallow.',
+      'level': '2'
     },
     {
       'word': 'capsule',
-      'hint': 'Medicine in a small shell that dissolves in the stomach.'
+      'hint': 'Medicine in a small shell that dissolves in the stomach.',
+      'level': '2'
+    },
+    {
+      'word': 'vitals',
+      'hint': 'Important body measurements like heart rate and temperature.',
+      'level': '2'
+    },
+    // Level 3 - Hard (7-8 letters)
+    {
+      'word': 'oxygen',
+      'hint': 'The gas in the air that our body needs to breathe.',
+      'level': '3'
+    },
+    {
+      'word': 'surgery',
+      'hint': 'A medical procedure where doctors operate on the body.',
+      'level': '3'
+    },
+    {
+      'word': 'pharmacy',
+      'hint': 'The place where medicines are prepared and given to patients.',
+      'level': '3'
+    },
+    {
+      'word': 'antidote',
+      'hint': 'A medicine that stops poison from working.',
+      'level': '3'
+    },
+    {
+      'word': 'bandage',
+      'hint': 'A strip of cloth used to cover wounds.',
+      'level': '3'
+    },
+    // Level 4 - Expert (9+ letters)
+    {
+      'word': 'stethoscope',
+      'hint': 'A device doctors use to listen to your heartbeat.',
+      'level': '4'
+    },
+    {
+      'word': 'temperature',
+      'hint': 'How hot or cold your body is.',
+      'level': '4'
+    },
+    {
+      'word': 'ambulance',
+      'hint': 'A vehicle that takes sick people to the hospital quickly.',
+      'level': '4'
+    },
+    {
+      'word': 'medicine',
+      'hint': 'Substances used to treat diseases and improve health.',
+      'level': '4'
+    },
+    {
+      'word': 'injection',
+      'hint': 'Putting medicine into the body with a needle.',
+      'level': '4'
     },
   ];
+
+  int _currentLevel = 1;
 
   @override
   void initState() {
@@ -158,17 +227,30 @@ class _HangmanGameState extends State<HangmanGame>
   }
 
   void _startNewRound() {
-    _wrongGuesses = 0;
-    _guessedLetters = <String>{};
-    _isGameFinished = false;
-    _revealedIndices = {};
-    _timeElapsed = 0;
-    _currentWordEntry = _wordBank[Random().nextInt(_wordBank.length)];
-    setState(() {});
-  }
+    setState(() {
+      _wrongGuesses = 0;
+      _guessedLetters = {};
+      _isGameFinished = false;
+      _revealedIndices = {};
+      _timeElapsed = 0;
 
-  String get _word => _currentWordEntry['word']!.toUpperCase();
-  String get _hint => _currentWordEntry['hint']!;
+      // Filter words by current level and select random one
+      final levelWords = _wordBank
+          .where((w) => w['level'] == _currentLevel.toString())
+          .toList();
+      if (levelWords.isEmpty) {
+        // If no words in current level, default to level 1
+        _currentLevel = 1;
+        final defaultWords = _wordBank.where((w) => w['level'] == '1').toList();
+        _currentWordEntry = defaultWords[Random().nextInt(defaultWords.length)];
+      } else {
+        _currentWordEntry = levelWords[Random().nextInt(levelWords.length)];
+      }
+
+      _word = _currentWordEntry['word']!.toUpperCase();
+      _hint = _currentWordEntry['hint']!;
+    });
+  }
 
   bool get _isWin {
     final letters = _word.split("").toSet();
@@ -574,18 +656,11 @@ class _HangmanGameState extends State<HangmanGame>
             sin(_shakeAnimation.value * 15) * 3 * (1 - _shakeAnimation.value),
             0,
           ),
-          child: GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 10,
-              mainAxisSpacing: 6,
-              crossAxisSpacing: 6,
-              childAspectRatio: 1.0,
-            ),
-            itemCount: letters.length,
-            itemBuilder: (context, index) {
-              final letter = letters[index];
+          child: Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            alignment: WrapAlignment.center,
+            children: letters.map((letter) {
               final isUsed = _guessedLetters.contains(letter);
               final isCorrect = isUsed && _word.contains(letter);
               final isWrong = isUsed && !_word.contains(letter);
@@ -594,6 +669,8 @@ class _HangmanGameState extends State<HangmanGame>
                 onTap: () => _onLetterTap(letter),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
+                  width: 36,
+                  height: 36,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: isCorrect
@@ -621,6 +698,7 @@ class _HangmanGameState extends State<HangmanGame>
                                     : const Color(0xFF2E86AB).withOpacity(0.3),
                         blurRadius: isUsed ? 0 : 6,
                         offset: const Offset(0, 3),
+                        spreadRadius: isUsed ? 0 : 1,
                       ),
                     ],
                     border: Border.all(
@@ -637,7 +715,7 @@ class _HangmanGameState extends State<HangmanGame>
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 14,
                           shadows: isUsed
                               ? null
                               : [
@@ -653,7 +731,7 @@ class _HangmanGameState extends State<HangmanGame>
                   ),
                 ),
               );
-            },
+            }).toList(),
           ),
         );
       },

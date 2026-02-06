@@ -851,6 +851,8 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
                                               ? _bounceAnimation.value * 0.1
                                               : 0.0,
                                           child: Container(
+                                            width: 70,
+                                            height: 70,
                                             decoration: BoxDecoration(
                                               gradient: isMismatch
                                                   ? const LinearGradient(
@@ -905,7 +907,7 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
                                                         const Color(0xFF3498DB)
                                                             .withOpacity(0.4),
                                                     blurRadius: 20,
-                                                    spreadRadius: 2,
+                                                    spreadRadius: 3,
                                                   ),
                                               ],
                                             ),
@@ -914,7 +916,7 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
                                                   ? Text(
                                                       '${shuffledNumbers[index]}',
                                                       style: const TextStyle(
-                                                        fontSize: 36,
+                                                        fontSize: 28,
                                                         color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -931,7 +933,7 @@ class _NumberMatchingGameState extends State<NumberMatchingGame>
                                                     )
                                                   : Icon(
                                                       Icons.help_outline,
-                                                      size: 36,
+                                                      size: 32,
                                                       color: Colors.white
                                                           .withOpacity(0.9),
                                                     ),
