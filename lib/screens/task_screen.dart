@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:medi_path/utils/data.dart';
 import 'package:medi_path/widgets/text_widget.dart';
@@ -227,20 +228,29 @@ class TaskScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20, right: 50),
+            padding: const EdgeInsets.only(top: 20, right: 20),
             child: Align(
               alignment: Alignment.topRight,
-              child: Container(
-                decoration: const BoxDecoration(
-                    color: Colors.red, shape: BoxShape.circle),
-                child: IconButton(
-                  onPressed: () {
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    HapticFeedback.mediumImpact();
                     Get.back();
                   },
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 50,
+                  customBorder: const CircleBorder(),
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 28,
+                    ),
                   ),
                 ),
               ),

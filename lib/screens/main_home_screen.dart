@@ -292,83 +292,104 @@ class _MainHomeScreenState extends State<MainHomeScreen>
               height: height,
               decoration: BoxDecoration(
                 color: _showRoomHints
-                    ? (accentColor ?? Colors.blue).withOpacity(0.1)
-                    : Colors.transparent,
+                    ? (accentColor ?? Colors.blue).withOpacity(0.15)
+                    : (accentColor ?? Colors.blue).withOpacity(0.05),
                 borderRadius: BorderRadius.circular(15),
-                border: _showRoomHints
-                    ? Border.all(
-                        color: (accentColor ?? Colors.blue).withOpacity(0.3),
-                        width: 2,
-                      )
-                    : null,
-                boxShadow: _showRoomHints
-                    ? [
-                        BoxShadow(
-                          color: (accentColor ?? Colors.blue).withOpacity(0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ]
-                    : null,
+                border: Border.all(
+                  color: (accentColor ?? Colors.blue)
+                      .withOpacity(_showRoomHints ? 0.5 : 0.25),
+                  width: _showRoomHints ? 3 : 1.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: (accentColor ?? Colors.blue)
+                        .withOpacity(_showRoomHints ? 0.3 : 0.15),
+                    blurRadius: _showRoomHints ? 15 : 8,
+                    offset: const Offset(0, 4),
+                    spreadRadius: _showRoomHints ? 3 : 1,
+                  ),
+                ],
               ),
-              child: _showRoomHints
-                  ? Stack(
-                      children: [
-                        Center(
-                          child: AnimatedBuilder(
-                            animation: _pulseAnimation,
-                            builder: (context, child) {
-                              return Transform.scale(
-                                scale: _pulseAnimation.value,
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: (accentColor ?? Colors.blue)
-                                            .withOpacity(0.3),
-                                        blurRadius: 8,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Icon(
-                                    icon ?? Icons.location_on,
-                                    color: accentColor ?? Colors.blue,
-                                    size: 24,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 8,
-                          left: 0,
-                          right: 0,
+              child: Stack(
+                children: [
+                  // Always visible subtle indicator
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: AnimatedBuilder(
+                      animation: _pulseAnimation,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _showRoomHints ? _pulseAnimation.value : 0.9,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
-                              color: Colors.black87,
-                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: (accentColor ?? Colors.blue)
+                                      .withOpacity(0.3),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
                             ),
-                            child: Text(
+                            child: Icon(
+                              icon ?? Icons.location_on,
+                              color: accentColor ?? Colors.blue,
+                              size: 18,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  // Room name label
+                  if (_showRoomHints)
+                    Positioned(
+                      bottom: 8,
+                      left: 8,
+                      right: 8,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: (accentColor ?? Colors.blue).withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.touch_app,
+                              color: Colors.white,
+                              size: 12,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
                               roomName,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: 11,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    )
-                  : null,
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         );

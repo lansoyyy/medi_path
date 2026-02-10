@@ -89,6 +89,10 @@ class _CharacterScreenState extends State<CharacterScreen>
                         _buildTitle(),
                         const SizedBox(height: 15),
 
+                        // Character selection explanation
+                        _buildCharacterExplanation(),
+                        const SizedBox(height: 15),
+
                         // Character grid
                         Expanded(
                           child: _buildCharacterGridLandscape(),
@@ -142,6 +146,68 @@ class _CharacterScreenState extends State<CharacterScreen>
             letterSpacing: 1,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCharacterExplanation() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFF87CEEB).withOpacity(0.3),
+            const Color(0xFFB0E0E6).withOpacity(0.2),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFF2E86AB).withOpacity(0.3),
+          width: 1.5,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF2E86AB).withOpacity(0.15),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.info_outline,
+              color: Color(0xFF2E86AB),
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'How Character Choice Works',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2E86AB),
+                  ),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  'Your chosen character will represent you throughout the game and appear in task briefings. Select your favorite medical professional!',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Color(0xFF5D6D7E),
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
